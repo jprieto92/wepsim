@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -147,6 +147,9 @@
         {
             var sim_components = simhw_sim_components() ;
 
+            if (typeof sim_components[component_name].details_ui === "undefined") {
+                return simcore_do_nothing_handler ;
+            }
             if (typeof sim_components[component_name].details_ui[detail_id][action_name] === "undefined") {
                 return simcore_do_nothing_handler ;
             }
@@ -267,8 +270,8 @@
 	        var SIMWARE = get_simware();
 
                 if (
-                     (! ((typeof curr_segments['.ktext'] != "undefined") && (SIMWARE.labels2.kmain)) ) &&
-                     (! ((typeof curr_segments['.text']  != "undefined") && (SIMWARE.labels2.main))   )
+                     (! ((typeof curr_segments['.ktext'] != "undefined") && (SIMWARE.labels_asm.kmain)) ) &&
+                     (! ((typeof curr_segments['.text']  != "undefined") && (SIMWARE.labels_asm.main))   )
                 )
                 {
 		     ret.msg = "labels 'kmain' (in .ktext) or 'main' (in .text) do not exist!" ;
@@ -393,14 +396,14 @@
             }
 
 	    // CPU registers initial values
-	    if ((typeof curr_segments['.ktext'] !== "undefined") && (SIMWARE.labels2.kmain))
+	    if ((typeof curr_segments['.ktext'] !== "undefined") && (SIMWARE.labels_asm.kmain))
 	    {
-	         set_value(pc_state, parseInt(SIMWARE.labels2.kmain)) ;
+	         set_value(pc_state, parseInt(SIMWARE.labels_asm.kmain)) ;
 	         show_asmdbg_pc() ;
 	    }
-	    else if ((typeof curr_segments['.text'] !== "undefined") && (SIMWARE.labels2.main))
+	    else if ((typeof curr_segments['.text'] !== "undefined") && (SIMWARE.labels_asm.main))
 	    {
-	         set_value(pc_state, parseInt(SIMWARE.labels2.main)) ;
+	         set_value(pc_state, parseInt(SIMWARE.labels_asm.main)) ;
 	         show_asmdbg_pc() ;
 	    }
 
@@ -736,6 +739,34 @@
             set_simware(SIMWAREaddon) ;
     	    update_memories(SIMWARE) ;
     	    simcore_reset() ;
+
+            return ret ;
+        }
+
+        function simcore_assembly_to_binasm ( textToCompile )
+        {
+    	    var ret = {} ;
+    	        ret.msg = "" ;
+    	        ret.ok  = true ;
+
+            // get SIMWARE.firmware
+            var SIMWARE = get_simware() ;
+    	    if (SIMWARE.firmware.length === 0)
+            {
+                ret.msg = 'Empty microcode, please load the microcode first.' ;
+                ret.ok  = false;
+                return ret;
+    	    }
+
+            // Get assembly as binary segment
+            var SIMWAREaddon = wsasm_src2binsrc(SIMWARE, textToCompile, {});
+    	    ret.simware = SIMWAREaddon ;
+            if (SIMWAREaddon.error != null)
+            {
+                ret.msg = SIMWAREaddon.error ;
+                ret.ok  = false;
+                return ret;
+            }
 
             return ret ;
         }

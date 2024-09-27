@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -22,6 +22,7 @@
     i18n.eltos.gui.hi = {
 
 		'Loading WepSIM...':		'WepSIM लोड हो रहा है ...',
+		'About':			'के बारे में',
 		'Configuration':		'विन्यास',
 		'MicroCode':		'माइक्रोकोड',
 		'Assembly':		'सभा',

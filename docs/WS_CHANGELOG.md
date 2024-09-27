@@ -1,6 +1,85 @@
 
 # Changelog
 
+## 2.3.1 -> 2.3.2:
+* Main improvements:
+  * Several minor improvements in the new default assembler:
+    * Relative branches offset can be now in bytes, words (MIPS), and half-words (RV)
+    * Support for alternative definitions of pseudo-instructions, ordered from most restrictive to least restrictive
+    * Support for binary segment:
+      <code>
+      .binary
+         main:
+           0x000x8000   0x69400003
+   	   ...
+      </code>
+  * Several minor updates to the firmware syntax v2:
+    * Save Firmware from control memory now supports firmware version 2
+    * Firmware metadata updated:
+      <html>
+       <table>
+        <tr>
+         <td>From:</td>
+         <td>To:</td>
+        </tr>
+        <tr>
+         <td><pre><b>firmware_version = 2,</b></pre></td>
+         <td>
+      <pre>
+      <b>firmware {
+         version  = 2,
+         rel_mult = 2,   # relative branch offset in half-words
+         endian   = little
+      }</b>
+      </pre>
+         </td>
+        </tr>
+       </table>
+      </html>
+  * User interface:
+    * Instruction detail tooltip now includes translation of labels into decimal values
+  * Several minor updates in the RV hardware
+* Main external dependencies updated:
+  * Bump bootstrap   from 5.3.2  to 5.3.3
+
+## 2.3.0 -> 2.3.1:
+* Main improvements:
+  * New default assembler with full support for firmware version 2
+  * Initial changes for better hardware maintenace
+  * Several minor improvements
+* Main external dependencies updated:
+  * Bump bootstrap   from 5.3.1  to 5.3.2
+  * Bump jquery      from 3.7.0  to 3.7.1
+  * Bump fontawesome from 6.4.0  to 6.4.2
+  * Bump async       from 3.2.2  to 3.2.4
+
+## 2.2.2 -> 2.3.0:
+* Main improvements:
+  * Migration to bootstrap 5.3 colors and dark mode
+  * Support added for firmware version 2
+* Main external dependencies updated:
+  * Bump bootstrap   from 5.2.3  to 5.3.1
+  * Bump jquery      from 3.6.0  to 3.7.0
+  * Bump introjs     from 4.3.0  to 7.0.1
+  * Bump fontawesome from 6.2.1  to 6.4.0
+
+## 2.2.1 -> 2.2.2:
+* Main improvements:
+  * Initial support for 32-bits floating point ALU
+  * Share by link improved
+  * Several minor improvements
+* Main external dependencies updated:
+  * Bump bootbox     from 5.5.3 to 6.0.0
+  * Bump fontawesome from 6.2.0 to 6.2.1
+
+## 2.2.0 -> 2.2.1:
+* Main improvements:
+  * Examples updated
+  * Initial version of a single L1 cache simulator
+  * Minor bugfixes
+* Main external dependencies updated:
+  * Bump bootstrap from 5.2.0 to 5.2.3
+
 ## 2.1.9 -> 2.2.0:
 * Main improvements:
   * Skip "notify:" added to configuration options.
@@ -57,7 +136,7 @@
 
 ## 2.1.4 -> 2.1.5:
 * Initial support for a compact description for each instruction
-* knockoutjs replaced by vuex v3.6.0 + vue.js v2.6.12 
+* knockoutjs replaced by vuex v3.6.0 + vue.js v2.6.12
 * Minor bugs fixed and several refinements added.
 
 ## 2.1.3 -> 2.1.4:
@@ -120,10 +199,10 @@
 
 ## 2.0.8 -> 2.0.9:
 * Interface:
-   + Notifications: 
+   + Notifications:
       * Added action to clear all notifications.
       * Show/hide timestamps.
-   + Configuration: 
+   + Configuration:
       * Introduced the Student (simple) & Teacher (full) views.
       * By default breakpoints works in both, microcode and assembly code.
    + Details dropdown: Simulation section added:

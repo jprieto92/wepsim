@@ -1,0 +1,9 @@
+idf_component_register(
+   SRCS
+      "program.s"
+      "wepsim-esp.c"
+      "ecall.s"
+      "io.s" 
+      "wepsim-lib.s"
+   INCLUDE_DIRS
+      "..")

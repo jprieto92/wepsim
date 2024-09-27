@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -55,8 +55,8 @@
 
 	      render_populate ( )
 	      {
-	        var o1 = '<div id="carousel-8" class="carousel"' +
-                         '     data-bs-interval="0" data-bs-touch="false" data-bs-animation="">' +
+	        var o1 = '<div id="carousel-8" class="carousel carousel-fade"' +
+                         '     data-bs-interval="0" data-bs-touch="false" data-bs-animation="false">' +
 			 ' <div class="carousel-inner">' +
 			 ' <div class="carousel-item active p-1" id="ws_simulator">' +
 			 '' +
@@ -121,13 +121,13 @@
 			  '	  <div class="w-100 d-xs-block d-sm-none"></div>' +
 			  '' +
 			  '	  <div id="slider_cpucu" ' +
-                          '            class="col-sm p-0 collapse multi-collapse-2 user_microcode">' +
+                          '            class="col-sm p-0 collapse multi-collapse-2 wsx_microcode">' +
 			  '	  <ws-toolbar components="slider_cpucu"></ws-toolbar>' +
 			  '	  </div>' +
 			  '' +
 			  '	  <div class="w-100 d-md-block d-lg-none"></div>' +
 			  '' +
-			  '	  <div class="col-sm p-0 ms-1 collapse multi-collapse-2 user_microcode">' +
+			  '	  <div class="col-sm p-0 ms-1 collapse multi-collapse-2 wsx_microcode">' +
 			  '	  <ws-toolbar components="slider_c1c2"></ws-toolbar>' +
 			  '	  </div>' ;
 	      }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -23,41 +23,51 @@
      * Execution Modes
      */
 
-    ws_info.modes = [ 'newbie', 'intro', 'asm_mips', 'asm_rv32', 'asm_z80' ] ;
+    ws_info.modes = [ 'ep', 'poc', 'rv', 'newbie', 'intro', 'asm_mips', 'asm_rv32', 'asm_z80' ] ;
 
     ws_info.default_example = {
-	                         'asm_mips': 'ep:ep_mips:mips_s4e1',
-	                         'asm_rv32': 'ep:ep_rv32:rv32_s7e2',
-	                         'asm_z80':  'ep:ep_z80:z80_s7e3'
+	                         'ep':       'Default-MIPS',
+	                         'poc':      'Default-MIPS',
+	                         'rv':       'Default-RISCV',
+	                         'asm_mips': 'ep:ep_bare:mips_s4e1',
+	                         'asm_rv32': 'ep:ep_os:rv32_s7e2',
+	                         'asm_z80':  'ep:ep_js:z80_s7e3'
 	                      } ;
 
+    ws_info.modes_ep = [ 'newbie', 'intro', 'asm_mips', 'asm_rv32', 'asm_z80' ] ;
 
-    // get list of modes
-    function wepsim_mode_getAvailableModes ( )
+
+    // get equivalent base mode
+    function wepsim_mode_getBaseMode ( derive_model )
     {
-        return ws_info.modes ;
+        if (derive_model == null) {
+            return 'ep' ;
+        }
+
+        if (ws_info.modes_ep.includes(derive_model)) {
+            return 'ep' ;
+        }
+
+        return derive_model ;
     }
 
     // Change WepSIM mode -> activate_hw + UI view
     function wepsim_mode_change ( optValue )
     {
-            var hwid = -1 ;
-
 	    // switch active hardware by name...
-	    if (ws_info.modes.includes(optValue))
-                 hwid = simhw_getIdByName('ep') ;
-	    else hwid = simhw_getIdByName(optValue) ;
-
+            var bm   = wepsim_mode_getBaseMode(optValue) ;
+            var hwid = simhw_getIdByName(bm) ;
             if (hwid != -1) {
                 wepsim_activehw(hwid) ;
 	    }
 
 	    // show/hide microcode...
-            wepsim_activeview('only_asm', false) ;
+            wepsim_activeview('extra_mcode', true) ;
 	    if (optValue.startsWith('asm_'))
 	    {
-                wepsim_activeview('only_asm', true) ;
+                wepsim_activeview('extra_mcode', false) ;
 		load_from_example_firmware(ws_info.default_example[optValue], false) ;
+                return true ;
 	    }
 
 	    // intro mode...
@@ -75,7 +85,12 @@
                  return true ;
             }
 
-            // return ok
+            // load default example
+            var eset_name = get_cfg('ws_examples_set') ;
+            if (eset_name != 'Empty')
+                 wepsim_example_load(eset_name) ;
+	    else wepsim_example_load(ws_info.default_example[optValue]) ;
+
             return true ;
     }
 

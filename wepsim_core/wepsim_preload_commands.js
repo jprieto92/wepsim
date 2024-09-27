@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -27,8 +27,9 @@
 	    'action': function( hash )
 		      {
                          var ws_mode = get_cfg('ws_mode');
-                         if (hash.mode !== ws_mode)
+                         if (hash.mode !== ws_mode) {
 			     wsweb_select_main(hash.mode) ;
+                         }
 
 			 return '<li>Mode set to <strong>' + hash.mode + '</strong>.</li> ' ;
 		      }
@@ -88,9 +89,87 @@
 			      return '' ;
 			  }
 
-			  var example_uri = example_obj.hardware + ":" + example_obj.microcode + ":" + example_obj.assembly ;
-			  load_from_example_firmware(example_uri, true) ;
+			  var example_uri = example_obj.hardware + ":" +
+                                            example_obj.microcode + ":" +
+                                            example_obj.assembly ;
+                          var load_example_assembly = ('' == hash.asm) ? true : false ;
+			  load_from_example_firmware(example_uri, load_example_assembly) ;
 			  return '<li>Example titled <strong>' + example_obj.title + '</strong> has been loaded.</li> ' ;
+		      }
+	 },
+
+	 // parameter: microcode (mc)
+	 {
+	    'name':   'mc',
+	    'action': function( hash )
+		      {
+			 var result_txt = '' ;
+                         var mc_code    = '' ;
+
+                         try
+                         {
+			    if ('cache' == hash.mc) {
+			         var cpts = wepsim_checkpoint_backup_load() ;
+                                 if (cpts.length != 0)
+			             mc_code = cpts[0].firmware ;
+                            }
+                            else {
+                                 mc_code = LZString.decompressFromEncodedURIComponent( hash.mc ) ;
+                            }
+			    result_txt = ' has been loaded' ;
+                         }
+                         catch (e) {
+                            mc_code    = '' ;
+			    result_txt = ' could not be loaded' ;
+                         }
+
+			 if ('' != mc_code) {
+                             inputfirm.setValue(mc_code) ;
+                             inputfirm.refresh() ;
+			 }
+
+			 return '<li><b>Microcode from URI</b> ' + result_txt + '.</li>' ;
+		      }
+	 },
+
+	 // parameter: assembly code (asm)
+	 {
+	    'name':   'asm',
+	    'action': function( hash )
+		      {
+			 var result_txt = '' ;
+                         var asm_code   = '' ;
+
+                         try
+                         {
+			    if ('cache' == hash.asm) {
+			         var cpts = wepsim_checkpoint_backup_load() ;
+                                 if (cpts.length != 0)
+			             asm_code = cpts[0].assembly ;
+                            }
+                            else {
+                                 asm_code = LZString.decompressFromEncodedURIComponent( hash.asm ) ;
+                            }
+			    result_txt = ' has been loaded' ;
+                         }
+                         catch (e) {
+                            asm_code   = '' ;
+			    result_txt = ' could not be loaded' ;
+                         }
+
+			 if ('' != asm_code)
+                         {
+                             inputasm.setValue(asm_code) ;
+                             inputasm.refresh() ;
+
+			     if ('' != hash.example)
+			     setTimeout(function() {
+					    wsweb_firmware_compile() ;
+					    wsweb_assembly_compile() ;
+					}, 500);
+			 }
+
+			 return '<li><b>Assembly from URI</b> ' + result_txt + '.</li>' ;
 		      }
 	 },
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -132,8 +132,8 @@
 
         //  d = examples[x].id + ' - ' + examples[x].type  + ' - ' + examples[x].title ;
             d = examples[x].id + ' - ' + examples[x].title ;
-            m = './examples/microcode/mc-' + examples[x].microcode + '.txt' ;
-            a = './examples/assembly/asm-' + examples[x].assembly  + '.txt' ;
+            m = './repo/microcode/' + examples[x].microcode + '.txt' ;
+            a = './repo/assembly/'  + examples[x].assembly  + '.txt' ;
             h = examples[x].hardware ;
             e = (m != (examples.length-1)) ? ',\n' : '\n' ;
 
@@ -603,6 +603,30 @@
 	// 3) get firmware
         var SIMWARE  = get_simware() ;
 	ret.firmware = SIMWARE.firmware ;
+
+	// 4) return result
+        return ret ;
+    }
+
+    function wepsim_nodejs_get_asmbin ( data, options )
+    {
+	// 1) initialization
+        var ret = wepsim_nodejs_init(data) ;
+	if (false === ret.ok) {
+	    return wepsim_nodejs_retfill(false, ret.msg + ".\n") ;
+	}
+
+	// 2) prepare firmware-assembly
+        ret = wepsim_nodejs_prepareCode(data, options) ;
+	if (false === ret.ok) {
+	    return wepsim_nodejs_retfill(false, ret.msg + ".\n") ;
+	}
+
+	// 3) transform assembly to binary assembly
+        ret = simcore_assembly_to_binasm(data.assembly) ;
+	if (false === ret.ok) {
+	    return wepsim_nodejs_retfill(false, "ERROR: Execution: " + ret.msg + ".\n") ;
+	}
 
 	// 4) return result
         return ret ;

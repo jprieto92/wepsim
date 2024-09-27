@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -39,10 +39,14 @@
 		'NO MAIN OR KMAIN':		'Tags \'viktigaste\' eller \'kmain\' definieras inte i textsegmentet (s). Det är obligatoriskt att definiera åtminstone en av dessa taggar för att köra ett program',
 		'UNKNOWN 1':			'Ett okänt fel inträffade (1) för fälttypen:',
 		'UNKNOWN 2':			'Oväntat fel (2)',
+	        'EMPTY OBJECT CODE':	        'Tom objektkod',
+		'REMEMBER FORMAT USED':		'Detta är instruktionsformatet som används för ',
 		'REMEMBER I. FORMAT':		'Kom ihåg att instruktionsformatet har definierats som:',
 		'SEVERAL CANDIDATES':		'Instruktion och fält matcha med mer än en mikro. Kontrollera mikrokoden. För närvarande kan instruktionen format vara',
-		'NOT MATCH MICRO':		'Instruktion och fält matchar inte med mikro.',
-		'CHECK MICROCODE':		'Kontrollera mikrokoden. Förmodligen du har glömt att lägga till ett fält, är ett antal utanför intervallet, eller om du bara använt en felaktig instruktion',
+		'NOT MATCH FORMAT':		'Instruktioner och fält matchar inte definierade format(er) ',
+		'NOT MATCH MICRO':		'Instruktion och fält matchar inte med mikro. ',
+		'CHECK MICROCODE':		'Kontrollera mikrokoden. ',
+                'CHECKS':               	'Du kanske har glömt att lägga till/ta bort ett fält, ett nummer är utanför intervallet, en felaktig instruktion användes, etc. ',
 		'LABEL NOT DEFINED':		'Märkning som används men inte definieras i assemblerkod:',
 		'INS. MISSING FIELD':		'Saknade fält i instruktionen',
 		'UNEXPECTED (REG)':		'Förväntad register men fann register inom parentes.',
@@ -104,6 +108,17 @@
 		'EXPECTED VALUE':		'Förväntat värde som passar i en "',
 		'BUT INSERTED':			'men införd',
 		'INSTEAD':			'istället',
+
+           	"BAD EOC BIN. LEN.":			"felaktigt antal bitar för eoc-fält",
+           	"BIT OoR":				"bit OoR",
+           	"COLON NOT FOUND":			": hittades inte",
+           	"COLON OR PIPE NOT FOUND":		": eller | hittades inte",
+           	"INCORRECT EOC BIN.":			"Felaktig eoc binär",
+           	"INCORRECT OC BIN.":			"Felaktig  oc binär",
+           	"NO FIELD":				"No field",
+           	"NO OC FIELD":				"No oc field",
+           	"OC ALREADY USED":			"oc redan använt",
+           	"OC+EOC ALREADY USED":			"oc+eoc används redan",
 
 		'_last_':			'_last_'
 

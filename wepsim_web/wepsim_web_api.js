@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -30,21 +30,31 @@
 		         "simulator": function() {
 					  sim_change_workspace('#main1', 0) ;
 
-                                          jQuery("#t3_firm").detach().appendTo("#t3_firm_placeholder2") ;
-                                          jQuery( "#t4_asm").detach().appendTo("#t4_asm_placeholder2") ;
-					  setTimeout(function() {
-							inputfirm.refresh() ;
-							inputasm.refresh() ;
-						     }, 50) ;
+			                  var actual_details = $('#select5b').text() ;
+			                  if (actual_details.includes('MicroCode')) {
+                                              jQuery("#t3_firm").detach().appendTo("#t3_firm_placeholder2");
+					      setTimeout(function() {
+							    inputfirm.refresh();
+						         }, 50) ;
+					  }
+			             else if (actual_details.includes('Assembly')) {
+                                              jQuery("#t4_asm").detach().appendTo("#t4_asm_placeholder2");
+					      setTimeout(function() {
+							    inputasm.refresh() ;
+						         }, 50) ;
+					  }
 	                              },
 		         "microcode": function() {
 		                          sim_change_workspace('#main3', 1) ;
 
 					  var t3_firm = document.getElementById("t3_firm");
 					  var ct3firm = document.getElementById("t3_firm_placeholder1");
-					  if (![...ct3firm.children].includes(t3_firm))
-                                          {
+					  if (![...ct3firm.children].includes(t3_firm)) {
                                               jQuery("#t3_firm").detach().appendTo('#t3_firm_placeholder1');
+                                          }
+
+					  if (inputfirm.is_refreshed != true) {
+					      inputfirm.is_refreshed = true ;
 			                      setTimeout(function(){
 					                    inputfirm.refresh() ;
 				                         }, 50) ;
@@ -55,13 +65,16 @@
 
 					  var t4_asm = document.getElementById("t4_asm");
 					  var ct4asm = document.getElementById("t4_asm_placeholder1");
-					  if (![...ct4asm.children].includes(t4_asm))
-                                          {
+					  if (![...ct4asm.children].includes(t4_asm)) {
                                               jQuery("#t4_asm").detach().appendTo("#t4_asm_placeholder1") ;
+                                          }
+
+					  if (inputasm.is_refreshed != true) {
+					      inputasm.is_refreshed = true ;
 					      setTimeout(function(){
 							    inputasm.refresh() ;
-						        }, 50) ;
-                                          }
+					    	         }, 50) ;
+					  }
 	                              }
 		       },
 	    "compact": {
@@ -142,26 +155,10 @@
 
     function wsweb_change_show_processor ( )
     {
-            var id_arr = [ 'svg_p', 'svg_cu', 'svg_p2' ] ;
-            var o = null ;
-            var a = null ;
-
 	    $("#tab26").tab('show') ;
-            if (simhw_active() !== null)
-            {
-                // reload svg (just in case)
-                for (var i in id_arr)
-                {
-                         o = document.getElementById(id_arr[i]) ;
-                     if (o === null) continue ;
-                     a = o.getAttribute('data') ;
-                         o.setAttribute('data', a) ;
-                }
 
-                // start drawing again
-	        wepsim_svg_start_drawing() ;
-	        refresh() ;
-            }
+            wepsim_svg_start_drawing() ;
+            cpucu_show_graph() ;
 
             // add if recording
             simcore_record_append_new('Show processor details',
@@ -174,7 +171,9 @@
     function wsweb_change_show_asmdbg ( )
     {
 	    $("#tab24").tab('show') ;
-            if (simhw_active() !== null)
+
+            var ahw = simhw_active() ;
+            if (ahw !== null)
             {
                 wepsim_svg_stop_drawing() ;
 
@@ -418,10 +417,13 @@
     var hash_detail2action = {
 	    "CLOCK":          function(){ wepsim_execute_microinstruction(); },
 	    "REGISTER_FILE":  function(){ wsweb_set_details_select(11); },
+
 	    "CONTROL_MEMORY": function(){ wsweb_set_details_select(16); show_memories_values(); },
 	    "CPU_STATS":      function(){ wsweb_set_details_select(17); show_memories_values(); },
 	    "MEMORY":         function(){ wsweb_set_details_select(14); show_memories_values(); },
 	    "MEMORY_CONFIG":  function(){ wsweb_set_details_select(18); show_memories_values(); },
+	    "CACHE":          function(){ wsweb_set_details_select(28); show_memories_values(); },
+	    "CACHE_CONFIG":   function(){ wsweb_set_details_select(29); show_memories_values(); },
 	    "KEYBOARD":       function(){ wsweb_set_details_select(12); show_memories_values(); },
 	    "SCREEN":         function(){ wsweb_set_details_select(12); show_memories_values(); },
 	    "IO_STATS":       function(){ wsweb_set_details_select(15); show_memories_values(); },
@@ -429,11 +431,30 @@
 	    "3DLED":          function(){ wsweb_set_details_select(25); show_memories_values(); },
 	    "LEDMATRIX":      function(){ wsweb_set_details_select(27); show_memories_values(); },
 
-	    "FRM_EDITOR":     function(){ wsweb_set_details_select(20); $("#t3_firm").appendTo("#t3_firm_placeholder2"); inputfirm.refresh(); },
-	    "ASM_EDITOR":     function(){ wsweb_set_details_select(21);  $("#t4_asm").appendTo("#t4_asm_placeholder2");   inputasm.refresh(); },
+
+	    "FRM_EDITOR":     function(){ wsweb_set_details_select(20);
+					  var t3_firm = document.getElementById("t3_firm");
+					  var ct3firm = document.getElementById("t3_firm_placeholder2");
+					  if (![...ct3firm.children].includes(t3_firm)) {
+                                              jQuery("#t3_firm").detach().appendTo('#t3_firm_placeholder2');
+                                          }
+					  setTimeout(function() {
+                                                        inputfirm.refresh();
+						     }, 50) ;
+                                        },
+	    "ASM_EDITOR":     function(){ wsweb_set_details_select(21);
+					  var t4_asm = document.getElementById("t4_asm");
+					  var ct4asm = document.getElementById("t4_asm_placeholder2");
+					  if (![...ct4asm.children].includes(t4_asm)) {
+                                              jQuery("#t4_asm").detach().appendTo("#t4_asm_placeholder2") ;
+                                          }
+					  setTimeout(function() {
+							inputasm.refresh() ;
+						     }, 50) ;
+                                        },
+
 	    "HARDWARE":       function(){ wsweb_set_details_select(22);
                                           wepsim_tooltips_hide('[data-bs-toggle=tooltip]');
-                                        //$("#infohw1").attr('components', 'summary,elements,states,signals,behaviors');
 	                                  simcoreui_show_hw();
 					  var ws_idiom = get_cfg('ws_idiom');
 					  i18n_update_tags('gui', ws_idiom);
@@ -968,7 +989,7 @@
 
     function wsweb_recordbar_close ( )
     {
-	    $('#record_div').collapse('hide') ;
+	    $('#record_div').hide() ;
 
             // add if recording
             simcore_record_append_new('Close the "record toolbar"',
@@ -1118,13 +1139,13 @@
 	    var bbmsg = '<div class="container">' +
 		        '<label for="frm_title1"><em>'    + i18n_get('dialogs',wsi,'Title') + ':</em></label>' +
 			'<p><input aria-label="title" id="frm_title1" ' +
-			'	  class="form-control btn-outline-dark" placeholder="Title for the notification" style="min-width: 90%;"/></p>' +
+			'	  class="form-control btn-outline-secondary" placeholder="Title for the notification" style="min-width: 90%;"/></p>' +
 		        '<label for="frm_message1"><em>'  + i18n_get('dialogs',wsi,'Message') + ':</em></label>' +
 			'<p><textarea aria-label="message" id="frm_message1" rows="5" ' +
-			'	      class="form-control btn-outline-dark" placeholder="Message for the notification" style="min-width: 90%;"/></textarea></p>' +
+			'	      class="form-control btn-outline-secondary" placeholder="Message for the notification" style="min-width: 90%;"/></textarea></p>' +
 		        '<label for="frm_duration1"><em>' + i18n_get('dialogs',wsi,'Duration') + ':</em></label>' +
 			'<p><input aria-label="duration" id="frm_duration1" type="number" ' +
-			'	  class="form-control btn-outline-dark" placeholder="Duration for the notification in seconds" style="min-width: 90%;"/></p>' +
+			'	  class="form-control btn-outline-secondary" placeholder="Duration for the notification in seconds" style="min-width: 90%;"/></p>' +
 		        '</div>' ;
 
             // dialog

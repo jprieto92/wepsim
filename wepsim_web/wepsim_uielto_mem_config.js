@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -87,7 +87,9 @@
 			  "<tr><td align=center'>Wait cycles (<u>0</u> - &infin;)</td>" +
 			  "    <td align=center'>" +
 			  "<div id='" + input_div + "'>" +
-			  "<input type=number v-model.lazy='value' min='0' max='99999999'>" +
+			  "<input type=number v-model.lazy='value' " +
+                          "       name='input_mem_wait' " +
+                          "       min='0' max='99999999'>" +
 			  "</div>" +
 			  "    </td></tr>" +
 			  "</tbody>" +
@@ -102,7 +104,7 @@
 		   return "<div class='container container-fluid'>" +
 			  "<div class='row justify-content-center'>" +
 		          "<div class='col-auto p-2 m-2'>" +
-			  "<div class='card bg-light'>" +
+			  "<div class='card bg-body-tertiary'>" +
                           " <h5 class='card-header text-center'>" +
                           "<span data-langkey='Wait cycles'>Wait cycles</span><br>" +
                           " </h5>" +

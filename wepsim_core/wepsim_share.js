@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -25,23 +25,78 @@
 
     function share_information ( info_shared, share_title, share_text, share_url )
     {
-	 if (typeof navigator.share === 'undefined')
+	 if (typeof navigator.share !== 'undefined')
 	 {
-	     var msg = 'Sorry, unable to share:<br>\n' +
-		       'navigator.share is not available.<br>' +
-		       '<br>' +
-		       '<div id="qrcode1" class="mx-auto"></div>' +
-		       '<br>' ;
-	     wsweb_dlg_alert(msg) ;
-
-             if (share_url !== "") {
-                 var qrcode = new QRCode("qrcode1") ;
-                     qrcode.makeCode(share_url) ;
-             }
-
-	     return false ;
+             return share_uri(info_shared, share_title, share_text, share_url) ;
 	 }
 
+         // new dialog
+	 var msg = '<div id="qrcode1" class="mx-auto"></div>' +
+		   '<br>' +
+		   'You can use the following link:<br>' +
+	           '<textarea id="qrcode2" class="form-control" row="5" ' +
+                   '          style="width: 100%; height:100%"' +
+                   '          onclick="navigator.clipboard.writeText(this.value);">' +
+                   share_url +
+                   '</textarea>' +
+                   '<span class="btn btn-sm btn-success" ' +
+                   '      onclick="var c = document.getElementById(\'qrcode2\').value;' +
+                   '               navigator.clipboard.writeText(c);">Copy to clipboard</span>' +
+	           '<br>' ;
+
+	 wsweb_dlg_alert(msg) ;
+
+         // get URL and QR
+         try
+         {
+            $("#qrcode1").html('You can use the following QR-code:<br>') ;
+            var qrcode = new QRCode("qrcode1") ;
+            qrcode.clear() ;
+            qrcode.makeCode(share_url) ;
+         }
+         catch (e) {
+         // $("#qrcode1").html('You can use the following <a href="' + share_url + '">link</a><br>') ;
+            $("#qrcode1").html('') ;
+         }
+
+         // return ok
+	 return true ;
+    }
+
+    function share_as_uri ( share_eltos )
+    {
+         var url_to_share = '' ;
+         var txt_enc      = '' ;
+
+         // build the associate URI
+         try
+         {
+            url_to_share = get_cfg('base_url') + '?mode=' + get_cfg('ws_mode') ;
+
+            // * Thanks to Santiago and Diego for the LZString link
+
+            if (share_eltos.includes('mc'))
+            {
+                txt_enc  = LZString.compressToEncodedURIComponent(  inputfirm.getValue() ) ;
+                url_to_share = url_to_share + '&mc=' + txt_enc ;
+            }
+            if (share_eltos.includes('asm'))
+            {
+                txt_enc = LZString.compressToEncodedURIComponent(  inputasm.getValue() ) ;
+                url_to_share = url_to_share + '&asm=' + txt_enc ;
+            }
+         }
+         catch (e) {
+            url_to_share = '' ;
+         // console.log("ERROR on share_as_uri: url_to_share cannot be build\n") ;
+         }
+
+         // return link
+	 return url_to_share ;
+    }
+
+    function share_uri ( info_shared, share_title, share_text, share_url )
+    {
 	 // build data
 	 var data = {} ;
 

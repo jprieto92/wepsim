@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -39,10 +39,14 @@
 		'NO MAIN OR KMAIN':		'タグ「主」または「kmain」はテキスト・セグメント（単数または複数）で定義されていません。プログラムを実行するために、これらのタグのうちの少なくとも一つを定義することが義務付けられています',
 		'UNKNOWN 1':			'不明なエラーがフィールドタイプのために（1）発生しました：',
 		'UNKNOWN 2':			'予期しないエラー（2）',
+	        'EMPTY OBJECT CODE':	        '空のオブジェクトコード',
+		'REMEMBER FORMAT USED':		'これは、次の場合に使用される命令形式です。 ',
 		'REMEMBER I. FORMAT':		'命令フォーマットは次のように定義されていることに注意してください：',
 		'SEVERAL CANDIDATES':		'命令とフィールドは、複数のマイクロプログラムで一致します。マイクロコードを確認してください。現在、命令フォーマットを指定できます。',
+		'NOT MATCH FORMAT':		'命令とフィールドが定義された形式と一致しません',
 		'NOT MATCH MICRO':		'命令とフィールドはマイクロプログラムと一致しません。',
-		'CHECK MICROCODE':		'マイクロコードを確認してください。おそらくあなたは、フィールドを追加するのを忘れ、番号が範囲外である、またはあなただけの間違った命令を使用します',
+		'CHECK MICROCODE':		'マイクロコードを確認してください',
+                'CHECKS':               	'フィールドの追加/削除を忘れた、数値が範囲外である、間違った命令が使用された、などの可能性があります。',
 		'LABEL NOT DEFINED':		'ラベルは使用されるが、アセンブリコードで定義されていません。',
 		'INS. MISSING FIELD':		'命令のフィールドがありません',
 		'UNEXPECTED (REG)':		'予想されるレジスタが、括弧の間のレジスタを見つけました。',
@@ -104,6 +108,17 @@
 		'EXPECTED VALUE':		'そのAに収まる "期待値',
 		'BUT INSERTED':			'しかし挿入',
 		'INSTEAD':			'その代わり',
+
+           	"BAD EOC BIN. LEN.":			"eoc フィールドのビット数が正しくありません",
+           	"BIT OoR":				"Bit OoR",
+           	"COLON NOT FOUND":			"： 見つかりません",
+           	"COLON OR PIPE NOT FOUND":		": または |見つかりません",
+           	"INCORRECT EOC BIN.":			"不正な eoc バイナリ",
+           	"INCORRECT OC BIN.":			"不正な  oc バイナリ",
+           	"NO FIELD":				"No field",
+           	"NO OC FIELD":				"No oc field",
+           	"OC ALREADY USED":			"ocはすでに使用されています",
+           	"OC+EOC ALREADY USED":			"oc+eocはすでに使用されています",
 
 		'_last_':			'_last_'
 

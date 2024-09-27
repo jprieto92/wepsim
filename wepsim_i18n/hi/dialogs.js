@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -25,7 +25,7 @@
 		'Show/Hide Slider':		'स्लाइडर दिखाएँ / छिपाएँ',
 		'WepSIM User Interface skin':	'WepSIM यूजर इंटरफेस स्किन',
 		'Initial intro':		'प्रारंभिक परिचय',
-		'About WepSIM':		'WepSIM के बारे में',
+		'About WepSIM':			'WepSIM के बारे में',
 		'Title':		'शीर्षक',
 		'Message':		'संदेश',
 		'Duration':		'अवधि',

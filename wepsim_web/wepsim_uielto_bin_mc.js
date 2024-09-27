@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -86,24 +86,30 @@
 	{
 		var i = 0 ;
 		var s = "" ;
+		var n = "" ;
 
                 var filter = simhw_internalState('filter_signals') ;
 
-		var h = "<tr bgcolor='#FF9900'>" +
-                        "<td bgcolor='white'     style='border-style: solid; border-width:0px; border-color:lightgray;'></td>" +
-                        "<td bgcolor='lightblue' style='border-style: solid; border-width:1px; border-color:lightgray;'>co</td>" +
-                        "<td bgcolor='#FFCC00'   style='border-style: solid; border-width:1px; border-color:lightgray;' align='center'><small><b>&#181;dir</b></small></td>" +
-                        "<td bgcolor='white'     style='border-style: solid; border-width:0px; border-color:lightgray;'>&nbsp;&nbsp;</td>" ;
+		var h = "<tr>" +
+                        "<td class='border-secondary'></td>" +
+                        "<td class='border-secondary bg-info    text-dark'>co</td>" +
+                        "<td class='                 bg-warning text-dark' align='center'><small><b>&#181;dir</b></small></td>" +
+                        "<td class='border-secondary'>&nbsp;&nbsp;</td>" ;
 		var contSignals=1;
-		for (i=0; i<filter.length; i++) {
+		for (i=0; i<filter.length; i++)
+                {
                      s = filter[i].split(",")[0] ;
-		     h += "<td align='center' style='border-style: solid; border-width:1px;'><small><b>" + simhw_sim_signals()[s].name + "</b></small></td>";
+                     n = simhw_sim_signals()[s] ;
+                     if (typeof n == "undefined")
+                         continue ;
+                     n = n.name ;
+		     h += "<td class='border border-secondary bg-warning-subtle' align='center'><small><b>" + n + "</b></small></td>";
 		     contSignals++;
 		}
 		h += "</tr>" ;
 		
 		var o  = "<center>";
-		    o += "<table style='table-layout:auto; border-style: solid: border-width:0px; border-collapse:collapse;'>";
+		    o += "<table class='border border-0'>";
 
                 var l = 0;
                 var line = "";
@@ -126,22 +132,27 @@
 
                          line = "";
                          if (j==0)
-                              line += "<td style='border-style: solid; border-width:0px; border-color:lightgray;'>" +
+                              line += "<td class='border border-0'>" +
 				      "<span class='badge rounded-pill text-bg-secondary float-start'>" + isignature + "</span>&nbsp;</td>" +
-                                      "<td style='border-style: solid; border-width:1px; border-color:lightgray;'>" + ico + "</td>" ;
-                         else line += "<td style='border-style: solid; border-width:0px; border-color:lightgray;'>&nbsp;</td>" +
-                                      "<td style='border-style: solid; border-width:1px; border-color:lightgray;'>&nbsp;</td>" ;
+                                      "<td class='border border-secondary'>" + ico + "</td>" ;
+                         else line += "<td class='border border-0'>&nbsp;</td>" +
+                                      "<td class='border border-secondary'>&nbsp;</td>" ;
 
                          if (showBinary)
                               madd = "0x" + (mstart + j).toString(16) ;
                          else madd = mstart + j ;
 
-			 line += "<td align='center'  style='border-style: solid; border-width:1px; border-color:lightgray;' bgcolor='white'>" + madd + "</td>" +
-                                 "<td bgcolor='white' style='border-style: solid; border-width:0px; border-color:lightgray;'>&nbsp;</td>" ;
+			 line += "<td class='border border-secondary' align='center'>" + madd + "</td>" +
+                                 "<td class='border border-0'>&nbsp;</td>" ;
 			 var mins = mcode[j] ;
 		         for (var k=0; k<filter.length; k++)
 			 {
                               s = filter[k].split(",")[0] ;
+
+                              n = simhw_sim_signals()[s] ;
+                              if (typeof n == "undefined") {
+                                  continue ;
+                              }
 
 			      var svalue = parseInt(simhw_sim_signals()[s].default_value);
                               var newval = false;
@@ -183,8 +194,8 @@
                               }
 
 			      if (newval)
-			           line += "<td align='center' style='border-style: solid; border-width:1px;'><b>" + svalue + "</b></td>";
-			      else line += "<td align='center' style='border-style: solid; border-width:1px;'><font color='grey'>" + svalue + "</font></td>";
+			           line += "<td class='border border-secondary' align='center'><b>" + svalue + "</b></td>";
+			      else line += "<td class='border border-secondary' align='center'><font color='grey'>" + svalue + "</font></td>";
 			 }
 
 			 o += "<tr>" + line + "</tr>" ;

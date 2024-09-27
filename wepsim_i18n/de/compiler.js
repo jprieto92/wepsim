@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -39,10 +39,14 @@
 		'NO MAIN OR KMAIN':		'Tags \'main:\' oder \'kmain:\' ist nicht im Text-Segment (en) definiert ist. Es ist Pflicht, mindestens eines dieses Tags zu definieren, um ein Programm auszuführen,',
 		'UNKNOWN 1':			'Ein unbekannter Fehler aufgetreten ist (1) für den Feldtyp: ',
 		'UNKNOWN 2':			'Unerwarteter Fehler (2)',
+		'EMPTY OBJECT CODE':		'Leerer Objektcode',
+		'REMEMBER FORMAT USED':		'Dies ist das Anweisungsformat, das für verwendet wird ', 
 		'REMEMBER I. FORMAT':		'Denken Sie daran, dass das Befehlsformat hat wie definiert: ',
 		'SEVERAL CANDIDATES':		'Instruktion und Felder übereinstimmen mit mehr als einem Mikro. Bitte überprüfen Sie das Mikro. Derzeit kann das Befehlsformat sein: ',
+		'NOT MATCH FORMAT':		'Anweisung und Felder stimmen nicht mit den definierten Formaten überein ',
 		'NOT MATCH MICRO':		'Instruktion und Felder stimmen nicht überein mit Mikro.',
-		'CHECK MICROCODE':		'Bitte überprüfen Sie das Mikro. Wahrscheinlich vergessen Sie ein Feld hinzufügen, wird eine Zahl von nicht in seinem Raum passen, oder Sie einfach eine falsche Anweisung verwendet',
+		'CHECK MICROCODE':		'Bitte überprüfen Sie das Mikro. ',
+                'CHECKS':               	'Möglicherweise haben Sie vergessen, ein Feld hinzuzufügen/zu entfernen, eine Zahl liegt außerhalb des gültigen Bereichs, es wurde eine falsche Anweisung verwendet usw.',
 		'LABEL NOT DEFINED':		'Label verwendet, aber nicht in dem Assembler-Code definiert: ',
 		'INS. MISSING FIELD':		'Fehlendes Feld in der Anweisung',
 		'UNEXPECTED (REG)':		'Erwartete Register aber Register zwischen Klammer gefunden.',
@@ -104,6 +108,17 @@
 		'EXPECTED VALUE':		'Erwartungswert, dass passt in eine \'',
 		'BUT INSERTED':			'aber eingefügt',
 		'INSTEAD':			'stattdessen',
+
+           	"BAD EOC BIN. LEN.":			"falsche Anzahl von Bits für das EOC-Feld",
+           	"BIT OoR":				"bit OoR",
+           	"COLON NOT FOUND":			"doppelpunkt nicht gefunden",
+           	"COLON OR PIPE NOT FOUND":		"doppelpunkt oder Pipe nicht gefunden",
+           	"INCORRECT EOC BIN.":			"falsche eoc-Binärdatei",
+           	"INCORRECT OC BIN.":			"falsche  oc-Binärdatei",
+           	"NO FIELD":				"no field",
+           	"NO OC FIELD":				"no oc field",
+           	"OC ALREADY USED":			"oc bereits verwendet",
+           	"OC+EOC ALREADY USED":			"oc+eoc bereits verwendet",
 
 		'_last_':			'_last_'
 

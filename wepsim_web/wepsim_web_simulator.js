@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -59,6 +59,7 @@
 	    wsweb_change_workspace_simulator() ;
 	    wsweb_change_show_processor() ;
 	    wsweb_set_details('REGISTER_FILE') ;
+            show_cpuview_view() ;
 
 	    wsweb_set_cpucu_size(get_cfg('CPUCU_size')) ;
 	    wsweb_set_c1c2_size(get_cfg('C1C2_size')) ;
@@ -69,54 +70,93 @@
             // update current skin
 	    var cur_skin_user = get_cfg('ws_skin_user').split(":") ;
 
-	    if ('only_asm' === view)
-	    {
-	        cur_skin_user[0] = 'only_asm' ;
-	        cur_skin_user[1] = (is_set) ? 'on' : 'of' ;
-	    }
-	    if ('only_frequent' === view)
-	    {
-	        cur_skin_user[2] = 'only_frequent' ;
-	        cur_skin_user[3] = (is_set) ? 'on' : 'of' ;
-	    }
+            var index = cur_skin_user.indexOf(view) ;
+            if (index > -1) {
+                cur_skin_user.splice(index, 1) ;
+            }
+            if (is_set) {
+	        cur_skin_user.push(view) ;
+            }
 
             // update cfg
 	    var new_skin_user = cur_skin_user.join(":") ;
 	    update_cfg('ws_skin_user', new_skin_user) ;
-	    $('#label14-' + new_skin_user.replace(/:/g,"__")).button('toggle');
+
+            // update cfg dialog (just in case)
+            wepsim_config_button_pretoggle_val2('ws_skin_user', view, '14') ;
 
             // update view
             wepsim_restore_view(new_skin_user) ;
     }
 
+
+    var hash_opt_wsx = {
+			  'extra_mcode':   '.wsx_microcode',
+			  'extra_morecfg': '.wsx_morecfg',
+			  'extra_share':   '.wsx_share',
+			  'beta_poc':      '.wsx_poc',
+			  'beta_cache':    '.wsx_cache',
+			  'beta_ngc':      '.wsx_ngc'
+		       } ;
+
     function wepsim_restore_view ( view )
     {
+	    var classes = '' ;
+            var all_classes = [] ;
             var new_classes = [] ;
 	    var cur_skin_user = view.split(":") ;
-	    if ('only_asm' === cur_skin_user[0])
-	    {
-              //$(".multi-collapse-2").collapse("show") ;
-		inputfirm.setOption('readOnly', false) ;
 
-	        if ('on' === cur_skin_user[1])
-                {
-		   //$("#tab24").click() ;     // TOCHECK
-		     $("#tab24").tab("show") ; // TOCHECK
+            // get associated classes for base, extra, beta, etc.
+            var keys = Object.keys(hash_opt_wsx) ;
+            for (var i=0; i<keys.length; i++)
+            {
+		 all_classes.push(hash_opt_wsx[keys[i]]) ;
+                 if (cur_skin_user.includes(keys[i]) == false) {
+		     new_classes.push(hash_opt_wsx[keys[i]]) ;
+	         }
+            }
 
-		     inputfirm.setOption('readOnly', true) ;
-		     new_classes.push('.user_microcode') ;
-		}
-	    }
-	    if ('only_frequent' === cur_skin_user[2])
-	    {
-	        if ('on' === cur_skin_user[3])
-		    new_classes.push('.user_archived') ;
-	    }
-
-	    var classes = '.user_archived, .user_microcode' ;
+            // show/hide elements...
+	    classes = all_classes.join(", ") ;
 	    $(classes).removeClass('d-none') ;
             classes = new_classes.join(", ") ;
             $(classes).addClass('d-none') ;
+
+            if (cur_skin_user.includes('extra_mcode') == false)
+	    {
+		$("#tab24").tab("show") ;
+		inputfirm.setOption('readOnly', true) ;
+	    }
+	    else
+	    {
+              //$(".multi-collapse-2").collapse("show") ;
+		inputfirm.setOption('readOnly', false) ;
+	    }
+    }
+
+    function wepsim_appy_darkmode ( adm )
+    {
+	    var o = null ;
+            var id_arr = [ "svg_p", "svg_cu" ] ;
+
+            // refresh svg
+            wepsim_svg_refresh(id_arr) ;
+
+            // updating editors
+            var edt_theme = get_cfg('editor_theme') ;
+            if (('default' == edt_theme) && (adm)) {
+                 edt_theme = 'blackboard' ;
+            }
+            if (('blackboard' == edt_theme) && (false == adm)) {
+                 edt_theme = 'default' ;
+            }
+
+            wepsim_config_select_toggle('editor_theme', edt_theme, '5') ;
+
+	    sim_cfg_editor_theme(inputfirm) ;
+	    sim_cfg_editor_theme(inputasm) ;
+
+	    return true ;
     }
 
     function wepsim_restore_darkmode ( adm )
@@ -125,16 +165,31 @@
 
             // document
 	    if (adm === false)
-                 document.documentElement.setAttribute('data-theme', 'light') ;
-            else document.documentElement.setAttribute('data-theme', 'dark') ;
+                 document.documentElement.setAttribute('data-bs-theme', 'light') ;
+            else document.documentElement.setAttribute('data-bs-theme', 'dark') ;
 
-            // skipped elements
-	    o = document.querySelectorAll('.no-dark-mode') ;
-            for (var i=0; i<o.length; i++)
+            // set visual updates for dark/light mode
+            wepsim_appy_darkmode(adm) ;
+
+	    return true ;
+    }
+
+    var observer_darkmode = null ;
+
+    function wepsim_keepsync_darkmode ( )
+    {
+            // event handler for onChange (only once)
+            if (observer_darkmode == null)
             {
-	         if (adm === false)
-	              o[i].removeAttribute('data-theme', 'nodark') ;
-	         else o[i].setAttribute('data-theme',    'nodark') ;
+                observer = new MutationObserver(function ( mutations ) {
+						    var is_black_mode = get_cfg("ws_skin_dark_mode") ;
+						    wepsim_appy_darkmode(is_black_mode) ;
+			                        }) ;
+
+                observer.observe(document.documentElement, {
+                                    attributes: true,
+                                    attributeFilter: [ "data-bs-theme" ]
+                                 });
             }
 
 	    return true ;
@@ -206,6 +261,7 @@
 		                      show_main_memory: wepsim_show_main_memory,
 		                        show_asmdbg_pc: wepsim_show_asmdbg_pc,
                                    show_control_memory: wepsim_show_control_memory,
+		                     show_cache_memory: wepsim_show_cache_memory,
 		                          show_dbg_mpc: wepsim_show_dbg_mpc,
 				           show_dbg_ir: wepsim_show_dbg_ir
 	                      },
@@ -285,32 +341,20 @@
 
     function wepsim_activehw ( mode )
     {
+            var ahw = null ;
+            var o   = null ;
+
+            // activate the associated hardware
 	    simhw_setActive(mode) ;
 
-            // reload images
-	    var o = document.getElementById('svg_p') ;
-	    if (o != null) o.setAttribute('data',  simhw_active().sim_img_processor) ;
-	        o = document.getElementById('svg_cu') ;
-	    if (o != null) o.setAttribute('data', simhw_active().sim_img_controlunit) ;
-	        o = document.getElementById('svg_p2') ;
-	    if (o != null) o.setAttribute('data', simhw_active().sim_img_cpu) ;
+            // check hardware is active
+            ahw = simhw_active() ;
+            if (typeof ahw == "undefined") return false ;
+            if (       ahw == null)        return false ;
 
-            // reload images event-handlers
-	    var a = document.getElementById("svg_p");
-            if (a != null) {
-	        a.addEventListener("load",function() {
-		    simcore_init_eventlistener("svg_p", hash_detail2action, hash_signal2action) ;
-		    refresh() ;
-	        }, false);
-            }
-
-	    var b = document.getElementById("svg_cu");
-            if (b != null) {
-	        b.addEventListener("load",function() {
-	    	    simcore_init_eventlistener("svg_cu", hash_detail2action, hash_signal2action) ;
-		    refresh() ;
-	        }, false);
-            }
+            // reload images and associated textual representation
+            cpucu_show_graph() ;
+            cpucu_show_table('elements') ;
 
 	    // initialize hw UI
 	    simcore_init_ui(hash_detail2init) ;
@@ -350,15 +394,19 @@
            case 0:    $(diva).addClass('col-12 order-1') ;
                       $(divb).addClass('col-12') ;
                       break ;
+
            case 1:    $(diva).addClass('d-none') ;
                       $(divb).addClass('col-12 order-2') ;
                       break ;
+
            case 13:   $(diva).addClass('col-12 order-1') ;
                       $(divb).addClass('d-none') ;
                       break ;
+
            case 14:   $(diva).addClass('col-12') ;
                       $(divb).addClass('col-12 order-2') ;
                       break ;
+
            default:   $(diva).addClass('col-' + (new_value-1)) ;   //  1,  2, 3, ...
                       $(divb).addClass('col-' + (13-new_value)) ;  // 11, 10, 9, ...
                       break ;
@@ -470,47 +518,11 @@
             showhideAsmElements() ;
 
 	    // initialize editors
-	    inputfirm_cfg = {
-			        value: "\n\n\n\n\n\n\n\n\n\n\n\n",
-			        lineNumbers: true,
-			        lineWrapping: true,
-			        matchBrackets: true,
-			        tabSize: 2,
-			        foldGutter: {
-			  	   rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
-			        },
-			        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-			        mode: "text/javascript"
-			    } ;
-	    inputfirm = sim_init_editor("inputFirmware", inputfirm_cfg) ;
+	    inputfirm_cfg = sim_cm_get_firmcfg() ;
+	    inputfirm     = sim_init_editor("inputFirmware", inputfirm_cfg) ;
 
-	    inputasm_cfg = {
-				value: "\n\n\n\n\n\n\n\n\n\n\n\n",
-				lineNumbers: true,
-				lineWrapping: true,
-				matchBrackets: true,
-				tabSize: 2,
-				extraKeys: {
-				  "Ctrl-Space": function(cm) {
-				      CodeMirror.showHint(cm, function(cm, options) {
-					      var simware = get_simware();
-					      var cur = cm.getCursor();
-					      var result = [];
-					      for (var i=0; i<simware.firmware.length; i++) {
-						   if (simware.firmware[i].name != "begin") {
-							result.push(simware.firmware[i].signatureUser) ;
-						   }
-					      }
-					      return { list: result, from: cur, to: cur } ;
-				      });
-				  },
-				  "Ctrl-/": function(cm) {
-                                      cm.execCommand('toggleComment');
-				  }
-				},
-				mode: "gas"
-			    } ;
-	    inputasm = sim_init_editor("inputAssembly", inputasm_cfg) ;
+	    inputasm_cfg  = sim_cm_get_asmcfg() ;
+	    inputasm      = sim_init_editor("inputAssembly", inputasm_cfg) ;
 
 	    // init: voice
 	    wepsim_voice_init() ;
@@ -558,7 +570,6 @@
 	       // 1.B.- Pre-load examples
                var ws_examples_index_url = get_cfg('example_url') ;
                wepsim_example_loadSet(ws_examples_index_url) ;
-               wepsim_example_load('Default-MIPS') ;
 
 	       // 1.C.- Pre-load UI configuration
                cfgset_init() ;
@@ -588,12 +599,13 @@
             // progressive web application
 	    if ( (false == is_mobile()) && ('serviceWorker' in navigator) )
             {
-		navigator.serviceWorker.register('min.wepsim_web_pwa.js').catch(function() {
-		    wepsim_notify_error("<h4>Warning:" +
-		  		        "<br/>WepSIM was used over a HTTP connection.</h4>",
-		                        "Progressive Web Applications requires a HTTPS connection " +
-		                        "with a valid certificate, so PWA is disabled.<br/>" +
-		                        "Please use the 'x' to close this notification.") ;
+		navigator.serviceWorker.register('min.wepsim_web_pwa.js').catch(function()
+                {
+		    wepsim_notify_warning("<h4>Warning:" +
+		  		          "<br/>WepSIM was used over a HTTP connection.</h4>",
+		                          "Progressive Web Applications requires a HTTPS connection " +
+		                          "with a valid certificate, so PWA is disabled.<br/>" +
+		                          "Please use the 'x' to close this notification.") ;
 		}) ;
 	    }
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -80,7 +80,7 @@
 		              break ;
 
                          case 'absolute':
-		              helpurl = 'examples/hardware/' + seg_hardw + '/help/' +
+		              helpurl = 'repo/hardware/' + seg_hardw + '/help/' +
 			                help_arg + '-' + seg_idiom + '.html' ;
 		              resolve_html_url(helpdiv_hash, helpurl, '', uielto_help_scrolltothetop) ;
                               simcore_ga('help', 'help.absolute', 'help.absolute.' + help_arg) ;
@@ -132,7 +132,7 @@
 	// hardware summary image
         function uielto_help_hw_summary_image ( seg_hardw )
         {
-	    var img2 = 'examples/hardware/' + seg_hardw + '/images/cpu.svg?time=20220610' ;
+	    var img2 = 'repo/hardware/' + seg_hardw + '/images/cpu.svg?time=20230710' ;
 
 	    return '<button class="btn btn-secondary w-100" type="button"' +
                    '        data-bs-toggle="collapse"   data-bs-target="#hw_img_collapse1"' +
@@ -176,12 +176,12 @@
                 }
             }
 
-            o = o + '<div class="container grid-striped border border-light">' + '<div class="row py-1">' ;
+            o = o + '<div class="container grid-striped border border-tertiary">' + '<div class="row py-1">' ;
             for (m=0; m<helps.length; m++)
             {
     	        fmt_header = "" ;
     	        if (e_utype != helps[m].u_type) {
-    		    fmt_header = "<div class='float-none text-end text-capitalize fw-bold col-12 border-bottom border-secondary bg-white sticky-top mb-2'>" +
+    		    fmt_header = "<div class='float-none text-end text-capitalize fw-bold col-12 border-bottom border-secondary bg-body sticky-top mb-2'>" +
     			         helps[m].u_type +
     			         "</div>" ;
     		}
@@ -198,7 +198,7 @@
                                    "simcore_ga('help', 'help.index', 'help.index." + m + "');" ;
 
     	        if (fmt_toggle === "")
-    	            fmt_toggle = "bg-light" ;
+    	            fmt_toggle = "bg-body-tertiary" ;
     	       else fmt_toggle = "" ;
 
     	        if (m % 2 == 0)
@@ -210,8 +210,8 @@
     	        t_index   = (m+1).toString().padStart(2, ' ').replace(/ /g, '&nbsp;') ;
 
     		o = o + fmt_header +
-    			'<div class="col-xs-5 col-lg-4 py-1 ' + toggle_cls + '">' +
-    			'    <span class="badge rounded-pill text-bg-light me-2">' + t_index + '</span>' +
+    			'<div class="col-xs-5 col-lg-4 py-1 align-self-center ' + toggle_cls + '">' +
+    			'    <span class="badge rounded-pill text-secondary me-2">' + t_index + '</span>' +
     			'    <button class="btn btn-md bg-success text-white text-truncate text-wrap border p-0 w-75" ' +
                         '          style="cursor:pointer;" ' +
     			'          id="help_index_' + m + '" ' +

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -39,10 +39,14 @@
 		'NO MAIN OR KMAIN':		'टैग \'मुख्य\' या \'kmain\' पाठ खंड (रों) में परिभाषित नहीं कर रहे हैं। यह आदेश एक कार्यक्रम पर अमल करने में उन टैग का कम से कम एक परिभाषित करने के लिए अनिवार्य है',
 		'UNKNOWN 1':			'फ़ील्ड प्रकार के लिए एक अज्ञात त्रुटि हुई (1): ',
 		'UNKNOWN 2':			'अनपेक्षित त्रुटि (2)',
+	        'EMPTY OBJECT CODE':	        'खाली ऑब्जेक्ट कोड',
+		'REMEMBER FORMAT USED':		'यह निर्देश प्रारूप के लिए उपयोग किया जाता है ',
 		'REMEMBER I. FORMAT':		'याद रखें कि अनुदेश प्रारूप के रूप में परिभाषित किया गया है: ',
 		'SEVERAL CANDIDATES':		'निर्देश और खेतों से अधिक सूक्ष्म प्रोग्राम के साथ मेल खाते हैं। माइक्रोकोड की जांच करें। वर्तमान में, अनुदेश प्रारूप हो सकता है: ',
+		'NOT MATCH FORMAT':		'निर्देश और फ़ील्ड परिभाषित प्रारूप(प्रारूपों) से मेल नहीं खाते',
 		'NOT MATCH MICRO':		'निर्देश और खेतों माइक्रो प्रोग्राम के साथ मेल नहीं खाते।',
-		'CHECK MICROCODE':		'माइक्रोकोड की जांच करें। शायद आप एक क्षेत्र को जोड़ने के लिए भूल गया, एक नंबर अपने अंतरिक्ष में फिट नहीं करता है, या आप बस एक गलत अनुदेश का इस्तेमाल किया',
+		'CHECK MICROCODE':		'कृपया माइक्रोकोड जांचें',
+                'CHECKS':               	'हो सकता है कि आप फ़ील्ड जोड़ना/हटाना भूल गए हों, कोई संख्या सीमा से बाहर हो, गलत निर्देश का उपयोग किया गया हो, आदि।',
 		'INS. MISSING FIELD':		'शिक्षा में क्षेत्र गुम',
 		'UNEXPECTED (REG)':		'उम्मीद रजिस्टर लेकिन कोष्ठक के बीच रजिस्टर पाया।',
 		'EXPECTED (REG)':		'कोष्ठक लेकिन पाया के बीच उम्मीद रजिस्टर:',
@@ -104,6 +108,17 @@
 		'EXPECTED VALUE':		'उम्मीद मूल्य है कि एक में फिट \'',
 		'BUT INSERTED':			'लेकिन डाला',
 		'INSTEAD':			'बजाय',
+
+           	"BAD EOC BIN. LEN.":			"ईओसी फ़ील्ड के लिए बिट्स की गलत संख्या ",
+           	"BIT OoR":				"Bit OoR",
+           	"COLON NOT FOUND":			": नहीं मिला",
+           	"COLON OR PIPE NOT FOUND":		": या | नहीं मिला",
+           	"INCORRECT EOC BIN.":			"Incorrect eoc bin.",
+           	"INCORRECT OC BIN.":			"Incorrect oc bin.",
+           	"NO FIELD":				"No field",
+           	"NO OC FIELD":				"No oc field",
+           	"OC ALREADY USED":			"ओसी पहले से ही इस्तेमाल किया जा चुका है ",
+           	"OC+EOC ALREADY USED":			"oc+eoc पहले से ही उपयोग किया जा चुका है",
 
 		'_last_':			'_last_'
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -27,16 +27,21 @@
     {
 	    // alerts-container does not exist, create it
 	    var ac = $("#alerts-container") ;
-	    if (ac.length === 0) {
+	    if (ac.length === 0)
+            {
 		ac = $('<div id="alerts-container" ' +
-                       '     class="col-10 offset-xs-1  col-md-8 offset-md-2  col-lg-6 offset-lg-3" ' +
-                       '     style="position:fixed; top:10%; z-index:256;">') ;
+                       '     class="col-10 offset-1  col-md-8 offset-md-2  col-lg-6 offset-lg-3" ' +
+                       '     style="position:fixed; top:10%; z-index:1024;">') ;
 		$("body").append(ac) ;
 	    }
+ 
+	    // div configuration...
+            var btn1_close_class = "btn-close border border-secondary float-end alert-dismissible" ;
+            var ale1_div_class   = "alert alert-" + ntf_type + " shadow border border-tertiary" ;
 
 	    // create the alert div
-            var btn1   = $('<button type="button" class="btn-close border border-secondary float-end" onclick="wepsim_notify_close(); return false;">') ;
-	    var alert1 = $('<div class="alert alert-' + ntf_type + ' shadow border border-light">') ;
+            var btn1   = $('<button type="button" class="' + btn1_close_class + '" onclick="wepsim_notify_close(); return false;">') ;
+	    var alert1 = $('<div class="' + ale1_div_class + '">') ;
 	    ac.prepend(alert1.append(btn1.append("")).append(ntf_message)) ;
 
 	    // if delay was passed, set up a timeout to close the alert

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -25,6 +25,7 @@
 		'Idiom for help, examples, etc.':				'Sprache für Hilfe, Beispiele usw.',
 		'Notification speed: time before disapear':			'Benachrichtigungsgeschwindigkeit: Zeit bis zum Verschwinden',
 		'Dark Mode':							'Dunkelmodus',
+		'Use of experimental features':					'Verwendung experimenteller Funktionen',
 		'Editor':							'Editor',
 		'Editor theme: light or dark':					'Herausgeber Thema: hell oder dunkel',
 		'Light':							'Licht',

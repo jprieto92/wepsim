@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -25,6 +25,7 @@
 		'Idiom for help, examples, etc.':				'Idiom för hjälp, exempel etc.',
 		'Notification speed: time before disapear':			'Meddelandehastighet: Tid innan försvinner',
 		'Dark Mode':							'Mörkt läge',
+		'Use of experimental features':					'Användning av experimentella funktioner',
 		'Editor':							'Redaktör',
 		'Editor theme: light or dark':					'Redaktörstema: ljus eller mörk',
 		'Light':							'Ljus',
@@ -36,6 +37,7 @@
 		'Normal':							'Vanligt',
 		'Fast':								'Fast',
 		'Step-by-step: element in run mode':				'Steg för steg: element i körläge',
+
 		'Instructions':							'Instruktioner',
 		'Instruction':							'Instruktion',
 		'&#181;instructions':						'μinstructions',

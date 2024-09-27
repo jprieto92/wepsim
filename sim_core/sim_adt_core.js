@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -48,18 +48,18 @@
 				 mp:                  {},
 				 seg:                 {},
 				 labels:              {},
-				 labels2:             {},
+				 labels_asm:          {},
 				 labels_firm:         {},
 				 registers:           {},
 				 pseudoInstructions:  [],
 				 stackRegister:       null,
 
                                  // auxiliar datatypes
-				 cihash:              {},
-				 cocop_hash:          {},
-				 revlabels:           {},
-				 revlabels2:          {},
-				 revseg:              []
+				 hash_ci:                {},
+				 hash_cocop:             {},
+				 hash_labels_firm_rev:   {},
+				 hash_labels_asm_rev:    {},
+				 hash_seg_rev:           []
                             } ;
 
 
@@ -89,10 +89,12 @@
 			    a_id:    "fgarcia",
 			    a_name:  "F&eacute;lix Garc&iacute;a Carballeira",
 			    socials: {
-					lkin:    { name:"linkedin", faclass:"fab fa-linkedin", href:"" },
-					rgate:   { name:"r-gate", faclass:"fab fa-researchgate",
-						   href:"https://www.researchgate.net/profile/Felix_Garcia-Carballeira" },
-					github:  { name:"github", faclass:"fab fa-github", href:"" }
+					lkin:   { name:"linkedin", faclass:"fab fa-linkedin",
+                                                  href:"https://es.linkedin.com/in/f%C3%A9lix-garc%C3%ADa-carballeira-4ab48a14" },
+					rgate:  { name:"r-gate", faclass:"fab fa-researchgate",
+						  href:"https://www.researchgate.net/profile/Felix_Garcia-Carballeira" },
+					github: { name:"github", faclass:"fab fa-github",
+                                                  href:"" }
 				     }
 			  },
 			  {
@@ -102,12 +104,12 @@
 			    a_id:    "acaldero",
 			    a_name:  "Alejandro Calder&oacute;n Mateos",
 			    socials: {
-					lkin:    { name: "linkedin", faclass: "fab fa-linkedin",
-						   href:"https://www.linkedin.com/in/alejandro-calderon-mateos/" },
-					rgate:   { name: "r-gate", faclass: "fab fa-researchgate",
-						   href:"https://www.researchgate.net/profile/Alejandro_Calderon2" },
-					github:  { name: "github", faclass: "fab fa-github",
-						   href:"https://github.com/acaldero/" }
+					lkin:   { name: "linkedin", faclass: "fab fa-linkedin",
+						  href: "https://www.linkedin.com/in/alejandro-calderon-mateos/" },
+					rgate:  { name: "r-gate", faclass: "fab fa-researchgate",
+						  href: "https://www.researchgate.net/profile/Alejandro_Calderon2" },
+					github: { name: "github", faclass: "fab fa-github",
+						  href: "https://github.com/acaldero/" }
 				     }
 			  },
 			  {
@@ -117,10 +119,12 @@
 			    a_id:    "jprieto",
 			    a_name:  "Javier Prieto Cepeda",
 			    socials: {
-					lkin:    { name: "linkedin", faclass: "fab fa-linkedin",
-						   href:"https://www.linkedin.com/in/javier-prieto-cepeda" },
-					rgate:   { name: "r-gate", faclass: "fab fa-researchgate", href:"" },
-					github:  { name: "github", faclass: "fab fa-github", href:"" }
+					lkin:   { name: "linkedin", faclass: "fab fa-linkedin",
+						  href: "https://www.linkedin.com/in/javier-prieto-cepeda" },
+					rgate:  { name: "r-gate", faclass: "fab fa-researchgate",
+                                                  href: "https://www.researchgate.net/profile/Javier-Prieto-Cepeda" },
+					github: { name: "github", faclass: "fab fa-github",
+                                                  href: "https://github.com/jprieto92/" }
 				     }
 			  },
 			  {
@@ -136,6 +140,21 @@
 						   href:"https://www.researchgate.net/profile/Saul_Alonso_Monsalve" },
 					github:  { name: "github", faclass: "fab fa-github",
 						   href:"https://github.com/saulam/" }
+				     }
+			  },
+			  {
+			    c_id:    "collapse-author-5",
+			    i_src:   "images/author_juanbanpar.png",
+			    i_alt:   "Juan Banga Pardo",
+			    a_id:    "juanbanpar",
+			    a_name:  "Juan Banga Pardo",
+			    socials: {
+					lkin:    { name: "linkedin", faclass: "fab fa-linkedin",
+						   href:"https://www.linkedin.com/in/juanbangapardo/" },
+					rgate:   { name: "r-gate", faclass: "fab fa-researchgate",
+						   href:"" },
+					github:  { name: "github", faclass: "fab fa-github",
+						   href:"https://github.com/juanbanpar/" }
 				     }
 			  }
                         ] ;

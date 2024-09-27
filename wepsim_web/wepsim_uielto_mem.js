@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -44,12 +44,12 @@
 	      {
 		    // html holder
 		    var o1 = "<div class='container text-end multi-collapse-3 collapse show'>" +
-                             '<label class="my-0" for="popover-mem" style="min-width:95%">' +
+                             '<span class="my-0" for="popover-mem" style="min-width:95%">' +
                              '<span data-langkey="quick config">quick config</span>: ' +
                              "<a data-bs-toggle='popover-mem' id='popover-mem' " +
 			     "   tabindex='0' class='m-auto border-0'>" +
                              "<strong><strong class='fas fa-wrench text-secondary'></strong></strong>" +
-                             "</a></label>" +
+                             "</a></span>" +
                              "</div>" +
 		             "<div id='memory_MP' style='height:58vh; width:inherit;'></div>" ;
 
@@ -125,7 +125,7 @@
 
             // labels (seg)
             var SIMWARE = get_simware() ;
-            var seglabels = SIMWARE.revseg ;
+            var seglabels = SIMWARE.hash_seg_rev ;
 
             // memory
             var base_addrs = main_memory_get_baseaddr() ;
@@ -176,12 +176,16 @@
             {
                 i_key = parseInt(keys[k]) ;
 
-                // [add segment]
+                // [add segment if needed]
                 s1 = s2 = '' ;
 		while ( (seglabels_i < seglabels.length) && (i_key >= seglabels[seglabels_i].begin) )
 		{
-                    s1 = main_memory_showseglst('seg_id' + seglabels_i, seglabels[seglabels_i].name) ;
-                    s2 = main_memory_showsegrow('seg_id' + seglabels_i, seglabels[seglabels_i].name) ;
+                    if (".binary" != seglabels[seglabels_i].name)
+                    {
+                        // ".binary" is an assembly section but not a physical segment
+                        s1 = main_memory_showseglst('seg_id' + seglabels_i, seglabels[seglabels_i].name) ;
+                        s2 = main_memory_showsegrow('seg_id' + seglabels_i, seglabels[seglabels_i].name) ;
+                    }
 
 		    seglabels_i++ ;
 		}
@@ -189,7 +193,7 @@
                 if (s2 !== '') o2 += s2 ;
 
                 // (add row)
-                o2 += main_memory_showrow(cfg, memory_cpy, keys[k], (keys[k] == index), SIMWARE.revlabels2) ;
+                o2 += main_memory_showrow(cfg, memory_cpy, keys[k], (keys[k] == index), SIMWARE.hash_labels_asm_rev) ;
             }
 
             // pack and load html
@@ -212,11 +216,13 @@
             // * Configure html options
             element_scroll_set("#lst_ins1", pos) ;
 
-            if (cfg.showsegs)
+            if (cfg.showsegs) {
                 $("#lst_seg1").collapse("show") ;
+            }
 
-            if (cfg.showsrc)
+            if (cfg.showsrc) {
                 $(".mp_tooltip").collapse("show") ;
+            }
 
             // * Update old_main_add for light_update
             old_main_addr = index ;
@@ -239,14 +245,24 @@
 
             // blue for last memory access
             o1 = $("#addr" + old_main_addr) ;
-            o1.css('color', 'black') ;
-            o1.css('font-weight', 'normal') ;
+            if (o1.is(':visible'))
+            {
+		//o1.css('color', 'black') ;
+		  o1.removeClass('text-primary').addClass('text-body-emphasis') ;
+		//o1.css('font-weight', 'normal') ;
+		  o1.removeClass('fw-bold').addClass('fw-normal') ;
+            }
 
             old_main_addr = index ;
 
             o1 = $("#addr" + old_main_addr) ;
-            o1.css('color', 'blue') ;
-            o1.css('font-weight', 'bold') ;
+            if (o1.is(':visible'))
+            {
+		//o1.css('color', 'blue') ;
+		  o1.removeClass('text-body-emphasis').addClass('text-primary') ;
+		//o1.css('font-weight', 'bold') ;
+		  o1.removeClass('fw-normal').addClass('fw-bold') ;
+            }
 
             // show badges
             update_badges() ;
@@ -311,9 +327,9 @@
             }
 
             // wcolor
-            var wcolor = "color:black; font-weight:normal; " ;
+            var wcolor = "text-body-emphasis fw-normal " ;
 	    if (is_current) {
-                wcolor = "color:blue;  font-weight:bold; " ;
+                wcolor = "text-primary       fw-bold " ;
             }
 
             // value2
@@ -342,8 +358,8 @@
             }
 
             // build HTML
-	    o = "<div class='row' id='addr" + addr + "'" +
-                "     style='" + wcolor + " font-size:small; border-bottom: 1px solid lightgray !important'>" +
+	    o = "<div class='row " + wcolor + "' id='addr" + addr + "'" +
+                "     style='font-size:small; border-bottom: 1px solid lightgray !important'>" +
 	        "<div class='col-1 px-0' align='center'>" +
                      '<span id="bg' + addr + '" class="mp_row_badge"></span>' +
                 "</div>"+

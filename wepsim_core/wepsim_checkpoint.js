@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -137,6 +137,76 @@
      * Checkpointing: save + load
      */
 
+    function wepsim_checkpoint_NB_concat_ws_cells ( cells )
+    {
+         cells.push({
+	   	      "cell_type": "markdown",
+		      "source": "## wepsim_runner",
+		      "metadata": {}
+		    }) ;
+
+         cells.push({
+		      "cell_type": "code",
+		      "source": [
+			"from google.colab import _message\n",
+			"nb = _message.blocking_request('get_ipynb')\n",
+			"\n",
+			"type = ''\n",
+			"ws = {'firmware': '', 'assembly': ''}\n",
+			"for cell in nb['ipynb']['cells']:\n",
+			"  if '## firmware' in cell['source']:\n",
+			"     type = 'firmware'\n",
+			"     continue\n",
+			"  if '## assembly' in cell['source']:\n",
+			"     type = 'assembly'\n",
+			"     continue\n",
+			"  if type == 'firmware':\n",
+			"     ws['firmware'] = ' '.join(cell['source']) ;\n",
+			"     type = ''\n",
+			"     continue\n",
+			"  if type == 'assembly':\n",
+			"     ws['assembly'] = ' '.join(cell['source']) ;\n",
+			"     type = ''\n",
+			"     continue\n",
+			"\n",
+			"if ws['assembly'] != '' and ws['firmware'] != '':\n",
+			"   with open('/base.mc', 'w') as f:\n",
+			"       f.write(ws['firmware'])\n",
+			"   with open('/base.asm', 'w') as f:\n",
+			"       f.write(ws['assembly'])\n",
+			"\n",
+			"if ws['assembly'] != '' and ws['firmware'] != '':\n",
+			"   !npm install  terser jq jshint yargs clear inquirer >& /dev/null\n",
+			"   !wget https://github.com/acaldero/wepsim/releases/download/v2.3.2/wepsim-2.3.2.zip >& /dev/null\n",
+			"   !unzip -o wepsim-2.3.2.zip  >& /dev/null\n",
+			"   !rm -fr   wepsim-2.3.2.zip\n",
+			"   !./wepsim-2.3.2/wepsim.sh -a stepbystep -m ep -f /base.mc -s /base.asm > ./result.csv\n",
+			"\n",
+			"df = None\n",
+			"if ws['assembly'] != '' and ws['firmware'] != '':\n",
+			"   import pandas as pd\n",
+			"   import io\n",
+			"   df1 = pd.read_csv('./result.csv')\n",
+			"   df1.columns = df1.columns.str.strip()\n",
+			"   for item in df1.columns[:]:\n",
+			"       df1[item].replace(\"\\t\",\"\",     inplace=True, regex=True)\n",
+			"       df1[item].replace(\"&nbsp;\",\"\", inplace=True, regex=True)\n",
+			"\n",
+			"%load_ext google.colab.data_table\n",
+			"df1\n"
+		      ],
+		      "metadata": {
+			"name": "wepsim",
+			"type": "code",
+		        "collapsed": true,
+		        "deletable": false,
+		        "editable":  true
+		      }
+		    }) ;
+
+         return cells ;
+    }
+
     function wepsim_checkpoint_Obj2NB ( elements )
     {
          var val = "" ;
@@ -155,7 +225,11 @@
 	      cells.push({
 			    "cell_type": "markdown",
 			    "source": "## " + key,
-			    "metadata": {}
+		            "metadata": {
+		              "collapsed": false,
+		              "deletable": false,
+		              "editable":  false
+		            }
 			 }) ;
 
 	      cells.push({
@@ -168,10 +242,11 @@
 			        "type": typ,
 			        "collapsed": false,
 			        "deletable": false,
-			        "editable":  false
+			        "editable":  true
 			    }
 			 }) ;
          }
+         cells = wepsim_checkpoint_NB_concat_ws_cells(cells) ;
 
          // fill nb
 	 var nbObj = {
@@ -208,10 +283,12 @@
 	 var elements = {} ;
 
          // check params
-         if (typeof nbObj.cells === "undefined")
+         if (typeof nbObj.cells === "undefined") {
              return elements ;
-         if (typeof nbObj.cells.length === "undefined")
+         }
+         if (typeof nbObj.cells.length === "undefined") {
              return elements ;
+         }
 
          // convert NB -> Obj
 	 var key   = "" ;
@@ -227,7 +304,7 @@
               type  = nbObj.cells[i].metadata.type ;
               value = nbObj.cells[i].source ;
 
-              if (type !== "string") {
+              if (["string", "code"].includes(type) == false) {
                   value = JSON.parse(value) ;
               }
 
@@ -322,7 +399,7 @@
 
     function wepsim_checkpoint_loadExample ( tutorial_name )
     {
-	    var file_uri = 'examples/checkpoint/' + tutorial_name ;
+	    var file_uri = 'repo/checkpoint/' + tutorial_name ;
 
 	    // lambda (auxiliar) function
 	    var function_after_loaded = function (data_text)
@@ -360,10 +437,8 @@
 	         share_title += ' (' + obj_tagName.value + ')...' ;
 	    else share_title += '...' ;
 
-            return share_information('checkpoint',
-                                     share_title,
-                                     share_text,
-                                     share_url) ;
+            // sharing share_text (json) instead of share_url
+            return share_information('checkpoint', share_title, share_text, share_text) ;
     }
 
 
@@ -405,7 +480,9 @@
 
     function wepsim_checkpoint_listCache ( id_listdiv )
     {
-            var o = '<span style="background-color:#FCFC00">&lt;<span data-langkey="Empty">Empty</span>&gt;</span>' ;
+            var o = '<span class="bg-warning text-dark bg-opacity-75">' +
+                    '&lt;<span data-langkey="Empty">Empty</span>&gt;' +
+                    '</span>' ;
 
             var obj_wsbackup = wepsim_checkpoint_backup_load() ;
 	    if (obj_wsbackup.length == 0) {
@@ -418,9 +495,11 @@
 	    obj_wsbackup = obj_wsbackup.reverse() ;
 	    for (i=0; i<obj_wsbackup.length; i++)
 	    {
-		 o += '<label class="list-group-item btn btn-white border-dark text-truncate rounded-1">' +
-		      '   <input type="radio" name="browserCacheElto" id="' + i + '" autocomplete="off">' + obj_wsbackup[i].tag +
-		      '</label>' ;
+		 o += '<label data-bs-toggle="list" ' +
+                      '       class="list-group-item btn btn-white border-dark text-truncate rounded-1">' +
+		      '   <input type="radio" name="browserCacheElto" ' +
+                      '          id="' + i + '" autocomplete="off" class="btn-check" ' +
+                      '>' + obj_wsbackup[i].tag + '</label>' ;
 	    }
             o += '</div>' ;
 

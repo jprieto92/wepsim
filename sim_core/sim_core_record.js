@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -121,11 +121,11 @@
 	 }
 
          // add class and...
-         ui_obj.addClass('btn-warning') ;
+         ui_obj.addClass('bg-glow') ;
 
          // ...remove it after 'ws_glowing_time' ms.
          setTimeout(function() {
-		       ui_obj.removeClass('btn-warning') ;
+		       ui_obj.removeClass('bg-glow') ;
 	            }, ws_glowing_time) ;
     }
 
@@ -341,8 +341,8 @@
             ws_last_time = Date.now() ;
 
             // min. distance -> glowing time
-	    if ( (0 == distance) && (ws_records.length > 0) && 
-                 (ws_records[ws_records.length-1].description === "_pending event_") ) 
+	    if ( (0 == distance) && (ws_records.length > 0) &&
+                 (ws_records[ws_records.length-1].description === "_pending event_") )
             {
 	         distance = ws_glowing_time ;
 	    }

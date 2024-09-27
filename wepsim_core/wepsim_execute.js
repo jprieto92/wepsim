@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -203,6 +203,34 @@
 
     function wepsim_show_stopbyevent ( msg1, msg2 )
     {
+	var buttons = {} ;
+	    buttons.states = {
+	       label:     "<span data-langkey='States'>States</span>",
+	       className: 'btn btn-secondary col float-left shadow-none mr-auto',
+	       callback:  function() {
+	    		     wsweb_dlg_close(dlg_obj) ;
+			     wsweb_dialog_open('state') ;
+			     return true;
+		          }
+	    };
+	var ret = simcore_check_if_can_continue() ;
+	if (ret.ok)
+        {
+	    buttons.continue = {
+	       label:     "<span data-langkey='Continue'>Continue</span>",
+	       className: 'btn btn-secondary col float-left shadow-none mr-auto',
+	       callback:  function() {
+			     wsweb_dlg_close(dlg_obj) ;
+			     wsweb_execution_run();
+			     return true;
+		          }
+	    };
+        }
+	    buttons.close = {
+	       label:     "<span data-langkey='Close'>Close</span>",
+	       className: 'btn-primary col float-right shadow-none'
+	    };
+
 	var dlg_obj = {
 			id:      'current_state2',
 			title:   function() {
@@ -229,21 +257,7 @@
 					   '</div>' +
 					   '</div>' ;
                                  },
-			buttons: {
-					states: {
-					   label:     "<span data-langkey='States'>States</span>",
-					   className: 'btn btn-secondary col float-left shadow-none mr-auto',
-					   callback: function() {
-							wsweb_dlg_close(dlg_obj) ;
-							wsweb_dialog_open('state') ;
-							return true;
-						     },
-					},
-					close: {
-					   label:     "<span data-langkey='Close'>Close</span>",
-					   className: 'btn-primary col float-right shadow-none'
-					}
-				 },
+			buttons: buttons,
 			size:    '',
 			onshow:  function() {}
 		      } ;
@@ -255,17 +269,46 @@
 
     function wepsim_memdashboard_notify_offcanvas ( ref_mdash, notif_origin, notifications, skip1st )
     {
-        var k = 1 ;
-        if (skip1st) k++ ;
+        // find index 'k' of the first line for the notify...
+        let k = 0 ;
+        let lineuc = '' ;
+	while (k < notifications)
+        {
+            lineuc = ref_mdash.notify[k].toUpperCase() ;
+	    k++ ;
+
+            if (lineuc.includes("SKIP1ST")) {
+                break ;
+	    }
+	}
+	if (k >= notifications) {
+            k = 0 ;
+        }
+
+        // get title info
+        let title_info = '' ;
+        if (typeof ref_mdash.notify[k] != "undefined")
+	{
+            title_info = ref_mdash.notify[k] ;
+            if (true == skip1st) {
+                k++ ;
+            }
+	}
 
         // title
-	var dialog_title = "Notify @ 0x" + parseInt(notif_origin).toString(16) + ":<br>" + ref_mdash.notify[k] ;
+	var dialog_title = "Notify @ 0x" + parseInt(notif_origin).toString(16) + ":<br>" + title_info ;
 
 	// content
-	var dialog_msg = '<div style="max-height:80vh; width:inherit; overflow:auto; -webkit-overflow-scrolling:touch;">' ;
-	while (k<notifications) {
-	     dialog_msg += ref_mdash.notify[k] + "\n<br>" ;
-             k++;
+        var dialog_msg = '<div style="max-height:80vh; width:inherit; overflow:auto; -webkit-overflow-scrolling:touch;">' ;
+        while (k < notifications)
+        {
+	     dialog_msg += ref_mdash.notify[k] + "\n" ;
+
+             if (ref_mdash.notify[k].includes("<html>") == false) {
+	         dialog_msg += "<br>" ;
+             }
+
+             k++ ;
 	}
 	dialog_msg += '</div>' ;
 
@@ -331,7 +374,7 @@
 
     function wepsim_check_getnotifyoptions ( firstline )
     {
-        var ret = { 
+        var ret = {
 	             showas:         'offcanvas',
 	             skip1stline:    false,
 	             scroll2current: false,
@@ -436,7 +479,7 @@
                 }
 
 	        // show content...
-	        if ('offcanvas' == ret.showas) 
+	        if ('offcanvas' == ret.showas)
 	             wepsim_memdashboard_notify_offcanvas(ref_mdash, notif_origin, notifications, ret.skip1stline) ;
 	        else wepsim_memdashboard_notify_dialogbox(ref_mdash, notif_origin, notifications, ret.skip1stline) ;
 
@@ -478,10 +521,10 @@
         var i_clks = 0 ;
 	var i = 0 ;
 
-        // try to find fetch address, that is zero by default... 
+        // try to find fetch address, that is zero by default...
         fetch_maddr = 0 ;
         for (var k in curr_firm.labels_firm) {
-             if ("fetch" == curr_firm.labels_firm[k]) 
+             if ("fetch" == curr_firm.labels_firm[k])
                   fetch_maddr = k ;
         }
 

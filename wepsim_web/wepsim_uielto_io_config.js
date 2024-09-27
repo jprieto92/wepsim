@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -73,7 +73,7 @@
 		    o1 += "<div class='container-fluid'>" +
 			  "<div class='row'>" +
 		          "<div class='col-12 p-0'>" +
-			  "<div class='card bg-light m-0'>" +
+			  "<div class='card bg-body-tertiary m-0'>" +
 			  "<div class='card-body p-0' id='iopanel'>" +
 		          "<center>" +
 			  "<table class='table table-hover table-sm table-bordered m-0'>" +
@@ -108,12 +108,16 @@
 			  "</td>" +
 			  "<td align='center' class='p-0'>" +
 			  "<div id='int" + i + "_per' class='m-0'>" +
-			  "<input type='number' v-model.lazy='value' min='0' max='99999999' class='form-control p-0 m-0'>" +
+			  "<input type='number' v-model.lazy='value' " +
+                          "       name='input_io_per_" + i + "' " +
+                          "       min='0' max='99999999' class='form-control p-0 m-0'>" +
 			  "</div>" +
 			  "</td>" +
 			  "<td align='center' class='p-0'>" +
 			  "<div id='int" + i + "_pro' class='m-0'>" +
-			  "<input type='number' v-model.lazy='value' min='0' max='1' step='.05' class='form-control p-0 m-0'>" +
+			  "<input type='number' v-model.lazy='value' " +
+                          "       name='input_io_pro_" + i + "' " +
+                          "       min='0' max='1' step='.05' class='form-control p-0 m-0'>" +
 			  "</div>" +
 			  "</td>" +
 			  "</tr>" ;

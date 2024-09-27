@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -56,7 +56,7 @@
 
                     // build HTML
 		    o1 += '<div class="container">' +
-			  '<div class="row justify-content-center w-100 my-2 mx-0 sticky-top bg-white">' +
+			  '<div class="row justify-content-center w-100 my-2 mx-0 sticky-top bg-body">' +
 			  '<input id="' + id_search + '" ' +
 			  '       onkeyup="var value=$(this).val().toLowerCase();' +
 			  '	             $(\'.table2 td\').filter(function() {' +

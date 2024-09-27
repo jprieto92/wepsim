@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -26,7 +26,7 @@
 		'NO TAG, DIR OR INS':		'유효한 태그 (예 : tag1 :) 지시문 (예 : .data) 또는 명령어가 없습니다.: ',
 		'INVALID TAG FORMAT':		'태그는 (문자 나 밑줄로 시작하는) 영숫자 형식을 따라야합니다 : ',
 		'TAG OR INSTRUCTION':		'태그는 명령과 동일한 이름을 가질 수 없습니다 : ',
-		'REPEATED TAG':		'반복 태그 : ',
+		'REPEATED TAG':			'반복 태그 : ',
 		'NO NUMERIC DATATYPE':		'수치 데이터 만 발견에 대한 기대 값 : ',
 		'NO POSITIVE NUMBER':		'양수를 예상하지만, 발견',
 		'NO NUMBER OF BYTES':		'바이트의 예상 수는 .space에 예약 만 발견합니다 : ',
@@ -37,12 +37,16 @@
 		'UNEXPECTED DATATYPE':		'예기치 않은 데이터 유형 이름 : ',
 		'INVALID SEGMENT NAME':		'.DATA /는 .text / ... 세그먼트 예상하지만 발견 : ',
 		'NO MAIN OR KMAIN':		'태그 \'주\'또는 \'KMAIN\'는 텍스트 세그먼트 (들)에 정의되어 있지 않습니다. 이 프로그램을 실행하기 위해 해당 태그 중 적어도 하나를 정의하는 의무',
-		'UNKNOWN 1':		'알 수없는 오류가 필드 유형 (1) 발생',
-		'UNKNOWN 2':		'예기치 못한 오류 (2)',
+		'UNKNOWN 1':			'알 수없는 오류가 필드 유형 (1) 발생',
+		'UNKNOWN 2':			'예기치 못한 오류 (2)',
+	        'EMPTY OBJECT CODE':	        '빈 개체 코드',
+		'REMEMBER FORMAT USED':		'이것은 다음에 사용되는 명령 형식입니다. ',
 		'REMEMBER I. FORMAT':		'명령어 형식은 다음과 같이 정의되어 있는지 기억 : ',
 		'SEVERAL CANDIDATES':		'수업 및 필드는 하나 이상의 마이크로 프로그램과 일치합니다. 마이크로 코드를 확인하시기 바랍니다. 현재 명령의 형식은 다음과 같습니다',
-		'NOT MATCH MICRO':		'수업 및 필드는 마이크로 프로그램과 일치하지 않습니다.',
-		'CHECK MICROCODE':		'마이크로 코드를 확인하시기 바랍니다. 아마 당신은 필드를 추가하는 것을 잊었다 숫자는 공간에 맞지 않는, 또는 당신은 단지 잘못된 명령을 사용',
+		'NOT MATCH FORMAT':		'지침과 필드가 정의된 형식과 일치하지 않습니다.',
+		'NOT MATCH MICRO':		'수업 및 필드는 마이크로 프로그램과 일치하지 않습니다. ',
+		'CHECK MICROCODE':		'마이크로코드를 확인해주세요.',
+                'CHECKS':               	'필드를 추가/제거하는 것을 잊어버렸을 수도 있고, 숫자가 범위를 벗어났거나, 잘못된 명령이 사용되었을 수도 있습니다.',
 		'LABEL NOT DEFINED':		'레이블 어셈블리 코드에 정의되지 않고 사용 : ',
 		'INS. MISSING FIELD':		'명령어에서 필드 누락',
 		'UNEXPECTED (REG)':		'레지스터를 예상하지만, 괄호 사이에 레지스터를 발견했다.',
@@ -104,6 +108,17 @@
 		'EXPECTED VALUE':		'예상 값하는에 맞는 \'',
 		'BUT INSERTED':			'하지만 삽입',
 		'INSTEAD':			'대신',
+
+           	"BAD EOC BIN. LEN.":			"eoc 필드의 비트 수가 잘못되었습니다.",
+           	"BIT OoR":				"bit OoR",
+           	"COLON NOT FOUND":			": 찾을 수 없음",
+           	"COLON OR PIPE NOT FOUND":		": 또는 | 찾을 수 없음",
+           	"INCORRECT EOC BIN.":			"잘못된 eoc 바이너리",
+           	"INCORRECT OC BIN.":			"잘못된  oc 바이너리",
+           	"NO FIELD":				"No field",
+           	"NO OC FIELD":				"No oc field",
+           	"OC ALREADY USED":			"oc 이미 사용됨",
+           	"OC+EOC ALREADY USED":			"oc+eoc는 이미 사용되었습니다",
 
 		'_last_':			'_last_'
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -25,6 +25,65 @@
 
         // numbers
 
+	//
+	// decimal2binary(number: integer, size_to_fit: integer ) ->
+	//    [
+	//       num_base2,
+	//       number of bits extra of missing for num_base2,
+	//       minimum number of bits to represent num_base2
+	//    ]
+	//
+
+	function decimal2binary ( number, size )
+	{
+		var num_base2        = number.toString(2) ;
+		var num_base2_length = num_base2.length ;
+
+		if (num_base2_length > WORD_LENGTH) {
+		    return [num_base2, size-num_base2_length, num_base2_length] ;
+		}
+
+		num_base2        = (number >>> 0).toString(2) ;
+		num_base2_length = num_base2.length ;
+		if (number >= 0) {
+		    return [num_base2, size-num_base2_length, num_base2_length] ;
+		}
+
+		num_base2        = "1" + num_base2.replace(/^[1]+/g, "") ;
+		num_base2_length = num_base2.length ;
+		if (num_base2_length > size) {
+		    return [num_base2, size-num_base2_length, num_base2_length] ;
+		}
+
+		num_base2 = "1".repeat(size - num_base2.length) + num_base2 ;
+		return [num_base2, size-num_base2.length, num_base2_length] ;
+	}
+
+	function float2binary ( f, size )
+	{
+		var buf   = new ArrayBuffer(8) ;
+		var float = new Float32Array(buf) ;
+		var uint  = new Uint32Array(buf) ;
+
+		float[0] = f ;
+		return decimal2binary(uint[0], size) ;
+	}
+
+	function float2decimal ( f )
+	{
+		var buf   = new ArrayBuffer(8) ;
+		var float = new Float32Array(buf) ;
+		var uint  = new Uint32Array(buf) ;
+
+		float[0] = f ;
+                return uint[0] ;
+	}
+
+	function float2hex ( f )
+	{
+                return float2decimal(f).toString(16) ;
+	}
+
         function hex2float ( hexvalue )
         {
 		var sign     = (hexvalue & 0x80000000) ? -1 : 1;
@@ -43,6 +102,93 @@
 
 		return valuef ;
         }
+
+        function uint_to_float32 ( value )
+        {
+              var buf = new ArrayBuffer(4) ;
+              (new Uint32Array(buf))[0] = value ;
+              return (new Float32Array(buf))[0] ;
+        }
+
+        function float32_to_uint ( value )
+        {
+              var buf = new ArrayBuffer(4) ;
+              (new Float32Array(buf))[0] = value ;
+              return (new Uint32Array(buf))[0];
+        }
+
+	/**
+	 * IEEE 754 class of number
+	 * @param a {Number} sign + exponent + mantissa
+	 * @return {number} class as integer:
+	 *      0 -> -infinite
+	 *      1 -> -normalized number
+	 *      2 -> -non-normalized number
+	 *      3 -> -0
+	 *      4 -> +0
+	 *      5 -> +non-normalized number
+	 *      6 -> +normalized number
+	 *      7 -> +inf
+	 *      8 -> -NaN (signaling)
+	 *      9 -> +NaN (quiet)
+	 */
+	function float_class ( a )
+	{
+              var s = a & 0x80000000;
+                  s = s >> 31 ;
+              var e = a & 0x7F800000;
+                  e = e >> 23 ;
+              var m = a & 0x007FFFFF;
+
+	      let rd = 0 ;
+
+	      if (!m && !e) {
+		  rd = s ? 3 : 4 ;
+              }
+	      else if (!e) {
+		  rd = s ? 2 : 6 ;
+              }
+	      else if (!(e ^ 255)) {
+		  if (m)
+		      rd = s ? 8 : 9 ;
+		  else
+		      rd = s ? 0 : 7 ;
+              }
+	      else {
+		  rd = s ? 1 : 5 ;
+              }
+
+	      return rd ;
+	}
+
+	function float_class_power2 ( a )
+	{
+              var s = a & 0x80000000;
+                  s = s >> 31 ;
+              var e = a & 0x7F800000;
+                  e = e >> 23 ;
+              var m = a & 0x007FFFFF;
+
+	      let rd = 0 ;
+
+	      if (!m && !e) {
+		  rd = s ? 1<<3 : 1<<4 ;
+              }
+	      else if (!e) {
+		  rd = s ? 1<<2 : 1<<6 ;
+              }
+	      else if (!(e ^ 255)) {
+		  if (m)
+		      rd = s ? 1<<8 : 1<<9 ;
+		  else
+		      rd = s ? 1<<0 : 1<<7 ;
+              }
+	      else {
+		  rd = s ? 1<<1 : 1<<5 ;
+              }
+
+	      return rd ;
+	}
 
         function hex2char8 ( hexvalue )
         {
@@ -147,6 +293,11 @@
 	    return simcore_action_ui("MEMORY", 0, "show_control_memory")(memory, index, redraw) ;
         }
 
+        function show_cache_memory ( memory )
+        {
+	    return simcore_action_ui("MEMORY", 0, "show_cache_memory")(memory) ;
+        }
+
         function show_memories_values ( )
         {
 	    // main memory
@@ -160,6 +311,9 @@
 	    var reg_maddr  = get_value(simhw_sim_state(maddr_name)) ;
 
 	    show_control_memory(simhw_internalState('MC'), reg_maddr, true) ;
+
+	    // cache memory
+	    show_cache_memory(simhw_internalState('CM')) ;
 	}
 
         // CPU svg: update_draw
@@ -176,8 +330,16 @@
 
         function refresh()
         {
-	    for (var key in simhw_sim_signals()) {
-		 update_draw(simhw_sim_signals()[key], simhw_sim_signals()[key].value) ;
+	    var all_signals = simhw_sim_signals() ;
+            var one_signals = {} ;
+
+	    for (var key in all_signals) {
+                 if (all_signals[key].value == 0)
+		      update_draw(all_signals[key], all_signals[key].value) ;
+                 else one_signals[key] = 1 ;
+	    }
+	    for (var key in one_signals) {
+		 update_draw(all_signals[key], all_signals[key].value) ;
 	    }
 
 	    show_dbg_ir(get_value(simhw_sim_state('REG_IR_DECO'))) ;
@@ -244,5 +406,94 @@
                 var topPos = obj_byid[0].offsetTop ;
                 element_scroll_set(list_id, topPos + offset) ;
             }
+        }
+
+        // colors
+
+        var colors_schemes = {
+			        'color14' :  [ "#000000", "#FFFFFF", "#FF0000", "#FF8800", "#FFFF00",
+                                               "#88FF00", "#00FF00", "#00FF88", "#00FFFF", "#0088FF",
+                                               "#0000FF", "#8800FF", "#FF00FF", "#FF0088" ],
+
+			        'color16' :  [ "#000000", "#FFFFFF", "#9D9D9D", "#BE2633",
+                                               "#E06F8B", "#493C2B", "#A46422", "#EB8931",
+                                               "#F7E26B", "#2F484E", "#44891A", "#A3CE27",
+                                               "#1B2632", "#005784", "#31A2F2", "#B2DCEF" ],
+
+			        'color256' : [ "#000000", "#800000", "#008000", "#808000",
+                                               "#000080", "#800080", "#008080", "#c0c0c0",
+                                               "#808080", "#ff0000", "#00ff00", "#ffff00",
+                                               "#0000ff", "#ff00ff", "#00ffff", "#ffffff",
+                                               "#000000", "#00005f", "#000087", "#0000af",
+                                               "#0000d7", "#0000ff", "#005f00", "#005f5f",
+                                               "#005f87", "#005faf", "#005fd7", "#005fff",
+                                               "#008700", "#00875f", "#008787", "#0087af",
+                                               "#0087d7", "#0087ff", "#00af00", "#00af5f",
+                                               "#00af87", "#00afaf", "#00afd7", "#00afff",
+                                               "#00d700", "#00d75f", "#00d787", "#00d7af",
+                                               "#00d7d7", "#00d7ff", "#00ff00", "#00ff5f",
+                                               "#00ff87", "#00ffaf", "#00ffd7", "#00ffff",
+                                               "#5f0000", "#5f005f", "#5f0087", "#5f00af",
+                                               "#5f00d7", "#5f00ff", "#5f5f00", "#5f5f5f",
+                                               "#5f5f87", "#5f5faf", "#5f5fd7", "#5f5fff",
+                                               "#5f8700", "#5f875f", "#5f8787", "#5f87af",
+                                               "#5f87d7", "#5f87ff", "#5faf00", "#5faf5f",
+                                               "#5faf87", "#5fafaf", "#5fafd7", "#5fafff",
+                                               "#5fd700", "#5fd75f", "#5fd787", "#5fd7af",
+                                               "#5fd7d7", "#5fd7ff", "#5fff00", "#5fff5f",
+                                               "#5fff87", "#5fffaf", "#5fffd7", "#5fffff",
+                                               "#870000", "#87005f", "#870087", "#8700af",
+                                               "#8700d7", "#8700ff", "#875f00", "#875f5f",
+                                               "#875f87", "#875faf", "#875fd7", "#875fff",
+                                               "#878700", "#87875f", "#878787", "#8787af",
+                                               "#8787d7", "#8787ff", "#87af00", "#87af5f",
+                                               "#87af87", "#87afaf", "#87afd7", "#87afff",
+                                               "#87d700", "#87d75f", "#87d787", "#87d7af",
+                                               "#87d7d7", "#87d7ff", "#87ff00", "#87ff5f",
+                                               "#87ff87", "#87ffaf", "#87ffd7", "#87ffff",
+                                               "#af0000", "#af005f", "#af0087", "#af00af",
+                                               "#af00d7", "#af00ff", "#af5f00", "#af5f5f",
+                                               "#af5f87", "#af5faf", "#af5fd7", "#af5fff",
+                                               "#af8700", "#af875f", "#af8787", "#af87af",
+                                               "#af87d7", "#af87ff", "#afaf00", "#afaf5f",
+                                               "#afaf87", "#afafaf", "#afafd7", "#afafff",
+                                               "#afd700", "#afd75f", "#afd787", "#afd7af",
+                                               "#afd7d7", "#afd7ff", "#afff00", "#afff5f",
+                                               "#afff87", "#afffaf", "#afffd7", "#afffff",
+                                               "#d70000", "#d7005f", "#d70087", "#d700af",
+                                               "#d700d7", "#d700ff", "#d75f00", "#d75f5f",
+                                               "#d75f87", "#d75faf", "#d75fd7", "#d75fff",
+                                               "#d78700", "#d7875f", "#d78787", "#d787af",
+                                               "#d787d7", "#d787ff", "#d7af00", "#d7af5f",
+                                               "#d7af87", "#d7afaf", "#d7afd7", "#d7afff",
+                                               "#d7d700", "#d7d75f", "#d7d787", "#d7d7af",
+                                               "#d7d7d7", "#d7d7ff", "#d7ff00", "#d7ff5f",
+                                               "#d7ff87", "#d7ffaf", "#d7ffd7", "#d7ffff",
+                                               "#ff0000", "#ff005f", "#ff0087", "#ff00af",
+                                               "#ff00d7", "#ff00ff", "#ff5f00", "#ff5f5f",
+                                               "#ff5f87", "#ff5faf", "#ff5fd7", "#ff5fff",
+                                               "#ff8700", "#ff875f", "#ff8787", "#ff87af",
+                                               "#ff87d7", "#ff87ff", "#ffaf00", "#ffaf5f",
+                                               "#ffaf87", "#ffafaf", "#ffafd7", "#ffafff",
+                                               "#ffd700", "#ffd75f", "#ffd787", "#ffd7af",
+                                               "#ffd7d7", "#ffd7ff", "#ffff00", "#ffff5f",
+                                               "#ffff87", "#ffffaf", "#ffffd7", "#ffffff",
+                                               "#080808", "#121212", "#1c1c1c", "#262626",
+                                               "#303030", "#3a3a3a", "#444444", "#4e4e4e",
+                                               "#585858", "#626262", "#6c6c6c", "#767676",
+                                               "#808080", "#8a8a8a", "#949494", "#9e9e9e",
+                                               "#a8a8a8", "#b2b2b2", "#bcbcbc", "#c6c6c6",
+                                               "#d0d0d0", "#dadada", "#e4e4e4", "#eeeeee" ]
+			     } ;
+
+        function colors_clone ( cs )
+        {
+             var colors = colors_schemes[cs] ;
+
+             if (typeof colors == "undefined") {
+                 colors = colors_schemes['color16'] ;
+             }
+
+             return colors.map((x) => x) ;
         }
 

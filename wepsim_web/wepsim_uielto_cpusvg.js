@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -85,31 +85,80 @@
 	   o = o.getElementById(r[1]);
            if (o === null) return;
 
+           // get initial stroke-width and backup if needed
+           var w = o.getAttribute('stroke-width');
+           if (w == null) {
+               w = 0.70 ;
+           }
+
+           var wb = o.getAttribute('backup-stroke-width');
+           if (wb == null) {
+               wb = parseFloat(w);
+               o.setAttribute('backup-stroke-width', wb);
+           }
+
            if (active)
            {
-               o.style.setProperty("stroke",       color_active, "");
-               o.style.setProperty("fill",         color_active, "");
-               o.style.setProperty("stroke-width", size_active,  "");
+               o.style.setProperty("stroke",       color_active,     "");
+               o.style.setProperty("fill",         color_active,     "");
+               o.style.setProperty("stroke-width", wb * size_active, "");
            }
            else
            {
-               if (o.style.getPropertyValue("stroke") === color_inactive)
-                   return;
+               if (o.style.getPropertyValue("stroke") === color_inactive) return;
 
-               o.style.setProperty("stroke",       color_inactive, "");
-               o.style.setProperty("fill",         color_inactive, "");
-               o.style.setProperty("stroke-width", size_inactive,  "");
+               o.style.setProperty("stroke",       color_inactive,     "");
+               o.style.setProperty("fill",         color_inactive,     "");
+               o.style.setProperty("stroke-width", wb * size_inactive, "");
            }
         }
+
 
         /*
          *  Drawing part
          */
-        var DRAW_stop = false ;
+
+        var DRAW_stop    = false ;
+        var is_dark_mode = false ;
+
+        var cfg_color_background    = 'white' ;
+        var cfg_color_data_active   = '#0066FF' ;
+        var cfg_color_name_active   = '#FF0000' ;
+        var cfg_color_data_inactive = '#000000' ;
+        var cfg_color_name_inactive = '#000000' ;
+        var cfg_size_active         = 3.0 ;
+        var cfg_size_inactive       = 1.0 ;
+
+	function wepsim_svg_update_drawing ( )
+        {
+            // 1) from configuration
+	    cfg_color_data_active   = get_cfg('color_data_active') ;
+	    cfg_color_name_active   = get_cfg('color_name_active') ;
+	    cfg_color_data_inactive = get_cfg('color_data_inactive') ;
+	    cfg_color_name_inactive = get_cfg('color_name_inactive') ;
+	    cfg_size_active         = get_cfg('size_active') ;
+	    cfg_size_inactive       = get_cfg('size_inactive') ;
+
+            // 2) modify because dark-mode
+            is_dark_mode = get_cfg("ws_skin_dark_mode") ;
+
+            if (false == is_dark_mode) {
+                cfg_color_background    = 'white' ;
+	        cfg_color_data_inactive = '#000000' ;
+	        cfg_color_name_inactive = '#000000' ;
+            }
+            else {
+                cfg_color_background    = 'black' ;
+	        cfg_color_data_inactive = '#FFFFFF' ;
+	        cfg_color_name_inactive = '#FFFFFF' ;
+            }
+        }
 
 	function wepsim_svg_start_drawing ( )
         {
             DRAW_stop = false ;
+
+	    wepsim_svg_update_drawing() ;
         }
 
 	function wepsim_svg_stop_drawing ( )
@@ -159,25 +208,36 @@
 	    }
 
             /* 2) Draw data segments... */
-	    var cfg_color_data_active   = get_cfg('color_data_active') ;
-	    var cfg_color_data_inactive = get_cfg('color_data_inactive') ;
-	    var cfg_color_name_active   = get_cfg('color_name_active') ;
-	    var cfg_color_name_inactive = get_cfg('color_name_inactive') ;
-	    var cfg_size_active         = get_cfg('size_active') ;
-	    var cfg_size_inactive       = get_cfg('size_inactive') ;
-
 	    if (obj.draw_data.length > 1)
 	    // (different draws)
 	    {
-		    for (i=0; i<obj.draw_data.length; i++)
+	        // no active...
+		for (i=0; i<obj.draw_data.length; i++)
+	        {
+                    if (i===value) continue;
+
 		    for (j=0; j<obj.draw_data[i].length; j++) {
 	                   wepsim_svg_obj_draw(obj.draw_data[i][j],
-                                               (i===value) && draw_it,
+                                               false,
                                                cfg_color_data_active,
                                                cfg_color_data_inactive,
                                                cfg_size_active,
                                                cfg_size_inactive) ;
 		    }
+		}
+
+	        // active one...
+	        if (typeof obj.draw_data[value] != "undefined")
+	        {
+		    for (j=0; j<obj.draw_data[value].length; j++) {
+	                   wepsim_svg_obj_draw(obj.draw_data[value][j],
+                                               draw_it,
+                                               cfg_color_data_active,
+                                               cfg_color_data_inactive,
+                                               cfg_size_active,
+                                               cfg_size_inactive) ;
+		    }
+		}
 	    }
 	    else if (obj.nbits === 1)
 	    // (same draw) && (nbits === 1)
@@ -208,15 +268,33 @@
 	    if (obj.draw_name.length > 1)
 	    // (different draws)
 	    {
-		    for (i=0; i<obj.draw_name.length; i++)
+	        // no active...
+		for (i=0; i<obj.draw_name.length; i++)
+	        {
+                    if (i===value) continue;
+
 		    for (j=0; j<obj.draw_name[i].length; j++) {
 	                   wepsim_svg_obj_draw(obj.draw_name[i][j],
-                                               (i===value) && draw_it,
+                                               false,
                                                cfg_color_name_active,
                                                cfg_color_name_inactive,
                                                cfg_size_active,
                                                cfg_size_inactive) ;
 		    }
+		}
+
+	        // active one...
+	        if (typeof obj.draw_name[value] != "undefined")
+	        {
+		    for (j=0; j<obj.draw_name[value].length; j++) {
+	                   wepsim_svg_obj_draw(obj.draw_name[value][j],
+                                               draw_it,
+                                               cfg_color_name_active,
+                                               cfg_color_name_inactive,
+                                               cfg_size_active,
+                                               cfg_size_inactive) ;
+		    }
+		}
 	    }
 	    else if (obj.nbits === 1)
 	    // (same draw) && (nbits === 1)
@@ -261,5 +339,129 @@
 
 	    o.setAttributeNS(null, "visibility", value) ;
             o.style.visibility = value ;
+        }
+
+	function wepsim_svg_apply_darkmode ( svg_id )
+        {
+	    var svg_o = document.getElementById(svg_id);
+            if (null == svg_o) return ;
+
+	    var svg   = svg_o.contentDocument;
+            if (null == svg)   return ;
+
+	    var svg2 = svg.querySelector('svg') ;
+            if (null == svg2)  return ;
+
+            // 1) background
+	    svg2.setAttribute('style', 'background-color:' + cfg_color_background);
+
+            // 2) path
+            var def_color = null ;
+	    var elements  = svg.querySelectorAll("path") ;
+	    for (var i = 0; i < elements.length; i++)
+            {
+                 def_color = elements[i].getAttribute('wepsim:color') ;
+                 if (def_color != null)
+                 {
+	             elements[i].style.fill   = def_color ;
+	             elements[i].style.stroke = def_color ;
+                  // elements[i].setAttribute('fill',   def_color) ;
+                  // elements[i].setAttribute('stroke', def_color) ;
+
+                     continue ;
+                 }
+
+	         elements[i].style.fill   = cfg_color_data_inactive ;
+	         elements[i].style.stroke = cfg_color_data_inactive ;
+             //  elements[i].setAttribute('fill',   cfg_color_data_inactive) ;
+             //  elements[i].setAttribute('stroke', cfg_color_data_inactive) ;
+	    }
+
+            // 3) text
+	    elements = svg.querySelectorAll("text") ;
+	    for (var i = 0; i < elements.length; i++) {
+	         elements[i].style.fill = cfg_color_data_inactive ;
+	    }
+        }
+
+        function wepsim_svg_refresh ( id_arr )
+        {
+            var o = null ;
+
+            // set darkmode
+	    wepsim_svg_update_drawing() ;
+
+            // refresh svg (just in case)
+            for (var i in id_arr)
+            {
+                     o = document.getElementById(id_arr[i]) ;
+                 if (o === null) continue ;
+
+		 wepsim_svg_apply_darkmode(id_arr[i]) ;
+            }
+        }
+
+		function eventhandler_load_svg_set_darkmode ( obj )
+		{
+			  var obj_target = obj.target ;
+			  wepsim_svg_apply_darkmode(obj.currentTarget.id) ;
+
+                          // trick because safari fires load event again if setProperty set display to block :-(
+			  if (false == obj_target.img_first) {
+			      return ;
+			  }
+			  obj_target.img_first = false ;
+
+			  obj_target.style.setProperty("visibility", "visible") ;
+			  obj_target.style.setProperty("display",    "none") ;
+			  if ('' != obj_target.img_data) {
+			      setTimeout(function(){ obj_target.style.setProperty("display", "block"); }, 25);
+			  }
+		}
+
+        function wepsim_svg_reload ( id_arr, img_arr )
+        {
+            var o = null ;
+            var d = "" ;
+
+            // update default drawing
+	    wepsim_svg_update_drawing() ;
+            wsweb_set_cpucu_size(get_cfg('CPUCU_size')) ;
+
+            // reload svg (just in case)
+            for (var i in id_arr)
+            {
+                 // skip empty image
+                 if (null == img_arr[i]) {
+                      continue ;
+                 }
+
+                 // skip invalid id value
+                 o = document.getElementById(id_arr[i]) ;
+                 if (o === null) {
+                     continue ;
+                 }
+
+                 // hide empty image
+                 d = '' ;
+		 if ('' != img_arr[i]) {
+                     d = img_arr[i] + '?now=' + Date.now() ;
+		 }
+		 else {
+		     // wsweb_set_cpucu_size(14) without remembering 14...
+                     $('#slider2b').val(14) ;
+                     set_ab_size('#eltos_cpu_a', '#eltos_cpu_b', 14) ;
+		 }
+
+                 // set dark-mode after load
+		 o.style.setProperty("visibility", "hidden") ;
+    		 o.style.setProperty("display",    "block") ;
+                 o.img_data  = img_arr[i].trim() ;
+                 o.img_first = true ;
+	         o.addEventListener("load", eventhandler_load_svg_set_darkmode, false) ;
+
+                 // load image
+                 o.setAttribute('data', d) ;
+            }
         }
 

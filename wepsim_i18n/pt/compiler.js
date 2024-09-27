@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -38,11 +38,15 @@
 		'INVALID SEGMENT NAME':		'Espera .data / .text / ... segmento, mas encontrou: ',
 		'NO MAIN OR KMAIN':		'Tags \'principal\' ou \'kmain\' não são definidos no segmento de texto (s). É obrigatória a definir pelo menos uma dessas marcas, a fim de executar um programa',
 		'UNKNOWN 1':			'Ocorreu um erro desconhecido (1) para o tipo de campo: ',
-		'UNKNOWN 2':			'erro inesperado (2)',
+		'UNKNOWN 2':			'Erro inesperado (2)',
+	        'EMPTY OBJECT CODE':	        'Código objeto vazio',
+		'REMEMBER FORMAT USED':		'Este é o formato de instrução usado para ',
 		'REMEMBER I. FORMAT':		'Lembre-se que o formato de instrução tem sido definida como: ',
 		'SEVERAL CANDIDATES':		'Instrução e campos de combinar com mais de um microprograma. Por favor, verifique o microcódigo. Atualmente, o formato de instrução pode ser: ',
-		'NOT MATCH MICRO':		'Instrução e os campos não coincidirem com microprogram.',
-		'CHECK MICROCODE':		'Por favor, verifique o microcódigo. Provavelmente você esqueceu de adicionar um campo, um número não se encaixa no seu espaço, ou você acabou de usar uma instrução errada',
+		'NOT MATCH FORMAT':		'Instrução e campos não correspondem aos formatos definidos ',
+		'NOT MATCH MICRO':		'Instrução e os campos não coincidirem com microprogram. ',
+		'CHECK MICROCODE':		'Por favor, verifique o microcódigo. ',
+                'CHECKS':               	'Você pode ter esquecido de adicionar/remover um campo, um número está fora do intervalo, uma instrução errada foi usada, etc.',
 		'LABEL NOT DEFINED':		'Rótulo usado mas não definido no código de montagem: ',
 		'INS. MISSING FIELD':		'Campo faltando na instrução',
 		'UNEXPECTED (REG)':		'Espera registo mas não encontrou registo entre parênteses.',
@@ -104,6 +108,18 @@
 		'EXPECTED VALUE':		'valor esperado que se encaixa em um \'',
 		'BUT INSERTED':			'mas inserido',
 		'INSTEAD':			'em vez de',
+
+           	"BAD EOC BIN. LEN.":			"número incorreto de bits para o campo eoc",
+           	"BIT OoR":				"bit OoR",
+           	"COLON NOT FOUND":			": não encontrado",
+           	"COLON OR PIPE NOT FOUND":		": ou | não encontrado",
+           	"INCORRECT EOC BIN.":			"Binário eoc incorreto",
+           	"INCORRECT OC BIN.":			"Binário  oc incorreto",
+           	"NO FIELD":				"No field",
+           	"NO OC FIELD":				"No oc field",
+           	"OC ALREADY USED":			"oc já usado",
+           	"OC+EOC ALREADY USED":			"oc+eoc já usado",
+
 		'_last_':			'_last_'
 
     };

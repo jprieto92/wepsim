@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -129,7 +129,7 @@
 
             // build and load HTML
             for (var key in memory) {
-                 o1 += control_memory_showrow(memory, key, (key == index), SIMWARE.revlabels) ;
+                 o1 += control_memory_showrow(memory, key, (key == index), SIMWARE.hash_labels_firm_rev) ;
             }
 
             o1 = "<center><table class='table table-hover table-sm'>" +
@@ -151,18 +151,24 @@
 
         function light_refresh_control_memory ( memory, index )
         {
-            o1 = $("#maddr" + old_mc_addr) ;
-            if (o1.is(':visible')) {
-                o1.css('color', 'black') ;
-                o1.css('font-weight', 'normal') ;
+            o1 = $("#maddr" + old_mc_addr + " td") ;
+            if (o1.is(':visible'))
+            {
+		//o1.css('color', 'black') ;
+		  o1.removeClass('text-primary').addClass('text-body-emphasis') ;
+		//o1.css('font-weight', 'normal') ;
+		  o1.removeClass('fw-bold').addClass('fw-normal') ;
             }
 
             old_mc_addr = index ;
 
-            o1 = $("#maddr" + old_mc_addr) ;
-            if (o1.is(':visible')) {
-                o1.css('color', 'blue') ;
-                o1.css('font-weight', 'bold') ;
+            o1 = $("#maddr" + old_mc_addr + " td") ;
+            if (o1.is(':visible'))
+            {
+		//o1.css('color', 'blue') ;
+		  o1.removeClass('text-body-emphasis').addClass('text-primary') ;
+		//o1.css('font-weight', 'bold') ;
+		  o1.removeClass('fw-normal').addClass('fw-bold') ;
             }
         }
 
@@ -204,17 +210,18 @@
                              "if (event.stopPropagation) event.stopPropagation();" ;
 		}
 
-                var wcolor = "color:black; font-weight:normal; " ;
-                if (is_current) {
-                    wcolor = "color:blue;  font-weight:bold; " ;
+                // wcolor
+                var wcolor = "text-body-emphasis fw-normal " ;
+	        if (is_current) {
+                    wcolor = "text-primary       fw-bold " ;
                 }
 
 		o1 += "<tr id='maddr" + key + "' class='d-flex' " +
-                      "    style='font-size:small; " + wcolor + "' " +
+                      "    style='font-size:small;' " +
 		      "    onclick='" + jscode + "'>" +
-		      "<td             class='col-3 col-md-2 py-0' align='right'>" + maddr + "</td>" +
-		      "<td width='1%'  class='col-auto py-0 px-0' id='mcpin" + key + "'>" + trpin + "</td>" +
-		      "<td             class='col py-0'>" + value + "</td>" +
+		      "<td             class='col-3 col-md-2 py-0 " + wcolor + "' align='right'>" + maddr + "</td>" +
+		      "<td width='1%'  class='col-auto py-0 px-0  " + wcolor + "' id='mcpin" + key + "'>" + trpin + "</td>" +
+		      "<td             class='col py-0            " + wcolor + "'>" + value + "</td>" +
                       "</tr>" ;
 
                 // return HTML
@@ -237,7 +244,7 @@
 	       var key_hex = '0x' + parseInt(elto.key).toString(16) ;
 
                // ui-address_and_tags
-	       var labels = SIMWARE.revlabels[elto.key] ;
+	       var labels = SIMWARE.hash_labels_firm_rev[elto.key] ;
 	       if (typeof labels !== 'undefined') {
 		   labels = '<span>' +
 			    '<span class="badge rounded-pill text-bg-info font-monospace" ' +
@@ -261,7 +268,7 @@
 			    value_str:  value_str,
 			    labels_str: labels,
 			    b_icon:     '&nbsp;',
-			    style_obj:  { fontSize:'small', color:'black', fontWeight:'normal' }
+			    style_obj:  { fontSize:'small', color:'', fontWeight:'normal' }
 		         } ;
 
 	       return elto.ui ;
@@ -280,7 +287,7 @@
                // ui-style
 	       var maddr_name = simhw_sim_ctrlStates_get().mpc.state ;
 	       var index      = get_value(simhw_sim_state(maddr_name)) ;
-	       var style_obj = { fontSize:'small', color:'black', fontWeight:'normal' } ;
+	       var style_obj = { fontSize:'small', color:'', fontWeight:'normal' } ;
 	       if (elto.key == index) {
 		   style_obj = { fontSize:'small', color:'blue', fontWeight:'bold' } ;
 	       }

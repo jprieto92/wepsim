@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -68,7 +68,11 @@
 		    });
 
             // show
+	    d1.find('.modal-header').addClass("bg-body-secondary") ;
+	    d1.find('.modal-footer').addClass("bg-body-secondary") ;
 	    d1.find('.modal-title').addClass("mx-auto") ;
+	    d1.find('.bootbox-close-button').addClass("mx-1 btn-close border-0") ;
+
 	    d1.modal('handleUpdate') ;
 	    d1.modal('show');
 
@@ -117,6 +121,8 @@
 	    var d1 = bootbox.dialog(a_obj) ;
 
             // show
+	    d1.find('.modal-header').addClass("bg-body-secondary") ;
+	    d1.find('.modal-footer').addClass("bg-body-secondary") ;
 	    d1.find('.modal-title').addClass("ml-auto") ;
 	    d1.modal('handleUpdate') ;
             d1.modal('show') ;

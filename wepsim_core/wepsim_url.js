@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -80,6 +80,9 @@
     function wepsim_file_loadFrom ( fileToLoad, functionOnLoad )
     {
         // checks
+        if (typeof fileToLoad === "undefined") {
+            return false ;
+        }
         var fileReader = new FileReader();
         if (fileReader === null) {
             return false ;
@@ -130,6 +133,9 @@
 
     function getURLTimeStamp ( )
     {
+                return Date.now() ;
+
+/*
 		var dateObj = new Date();
 		var year    = dateObj.getUTCFullYear();
 		var month   = dateObj.getUTCMonth() + 1;
@@ -138,6 +144,7 @@
 		var minutes = dateObj.getUTCMinutes();
 
 		return year + month + day + hour + minutes ;
+*/
     }
 
     function fetchURL ( f_url )
@@ -241,9 +248,9 @@
                     var max_json_size = get_cfg('max_json_size') ;
 		    if (size < max_json_size) {
 	                $.getJSON(json_url, do_after).fail(function(e) {
-				                              wepsim_notify_do_notify('getJSON', 
-									              'There was some problem for getting ' + json_url, 
-									              'warning', 
+				                              wepsim_notify_do_notify('getJSON',
+									              'There was some problem for getting ' + json_url,
+									              'warning',
 									              0);
 			                                   }) ;
 		    }

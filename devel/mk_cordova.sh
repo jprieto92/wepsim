@@ -3,7 +3,7 @@
 
 
 #*
-#*  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+#*  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
 #*
 #*  This file is part of WepSIM.
 #*
@@ -33,10 +33,10 @@ fi
 
 # preparing www
 mv www www.initial.$$
-cp -a ./wepsim-2.1.8/ws_dist www
+cp -a ./wepsim-master/ws_dist www
 
 # adapting paths...
-sed -i .bak 's/wepsim/android_asset\/www/g' ./www/examples/hardware/ep/images/processor.svg
+sed -i .bak 's/wepsim/android_asset\/www/g' ./www/repo/hardware/ep/images/processor.svg
 sed -i .bak 's/external\/cordova/cordova/g' ./www/wepsim-classic.html
 sed -i .bak 's/external\/cordova/cordova/g' ./www/wepsim-compact.html
 

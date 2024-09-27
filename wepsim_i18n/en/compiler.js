@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -42,11 +42,15 @@
                                    "It is compulsory to define at least one of those tags in order to execute a program",
            "UNKNOWN 1":            "An unknown error ocurred (1) for field type ",
            "UNKNOWN 2":            "Unexpected error (2)",
+	   'EMPTY OBJECT CODE':	   'Empty object code',
+           "REMEMBER FORMAT USED": "This is the instruction format used for ",
            "REMEMBER I. FORMAT":   "Remember that the instruction format has been defined as ",
            "SEVERAL CANDIDATES":   "Instruction and fields match with more than one instruction in microcode. " +
                                    "Please check the microcode. Currently, the instruction format can be ",
+           "NOT MATCH FORMAT":     "Instruction and fields don't match with defined format(s) ",
            "NOT MATCH MICRO":      "Instruction and fields don't match with microprogram. ",
-           "CHECK MICROCODE":      "Please check the microcode. Probably you forgot to add a field, a number is out of range, or you just used a wrong instruction",
+           "CHECK MICROCODE":      "Please check the microcode. ",
+           "CHECKS":               "You might forgot to add/remove a field, a number is out of range, a wrong instruction was used, etc.",
            "LABEL NOT DEFINED":    "Label used but not defined in the assembly code ",
            "INS. MISSING FIELD":   "Missing field in the instruction",
            "UNEXPECTED (REG)":     "Expected register but found register between parenthesis.",
@@ -108,6 +112,17 @@
            "EXPECTED VALUE":         "Expected value that fits in a '",
            "BUT INSERTED":           "but inserted ",
            "INSTEAD":                "instead",
+
+           "BAD EOC BIN. LEN.":				"bad eoc binary length",
+           "BIT OoR":					"bit OoR",
+           "COLON NOT FOUND":				"colon not found",
+           "COLON OR PIPE NOT FOUND":			"colon or pipe not found",
+           "INCORRECT EOC BIN.":			"incorrect eoc binary",
+           "INCORRECT OC BIN.":				"incorrect oc binary",
+           "NO FIELD":					"no field",
+           "NO OC FIELD":				"no oc field",
+           "OC ALREADY USED":				"oc already used",
+           "OC+EOC ALREADY USED":			"oc+eoc already used",
 
 	   "_last_":		     "_last_"
     } ;

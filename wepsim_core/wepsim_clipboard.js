@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2022 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
  *
  *  This file is part of WepSIM.
  *
@@ -37,7 +37,7 @@
         var doc = document
             , text = doc.getElementById(element)
             , range, selection
-        ;   
+        ;
         if (doc.body.createTextRange)
 	{
             range = document.body.createTextRange();
@@ -46,7 +46,7 @@
         }
 	else if (window.getSelection)
 	{
-            selection = window.getSelection();       
+            selection = window.getSelection();
             range = document.createRange();
             range.selectNodeContents(text);
             selection.removeAllRanges();
