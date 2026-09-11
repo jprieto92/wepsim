@@ -2,7 +2,7 @@
 
 
 #*
-#*  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+#*  Copyright 2015-2026 The WepSIM team (see docs/WEPSIM-TEAM.md)
 #*
 #*  This file is part of WepSIM.
 #*
@@ -120,6 +120,7 @@ i18n_eltos['examples'] = {
              "Interruptions":						"Interruptions",
              "Int. + syscall + except.":				"Int. + syscall + except.",
              "I/O":							"I/O",
+             "Timer":							"Timer",
              "Looping":							"Looping",
              "madd, mmul, mxch":					"madd, mmul, mxch",
              "Masks & shift":						"Masks & shift",
@@ -252,8 +253,8 @@ i18n_eltos['gui'] = {
 	"Stats":					"Stats",
 	"Memory":					"Memory",
 	"Keyboard+Display":				"Keyboard+Display",
-	"I/O Stats":					"I/O Stats",
-	"I/O Configuration":				"I/O Configuration",
+	"Timer Stats":					"Timer Stats",
+	"Timer Configuration":				"Timer Config.",
 
 	"Recent":                                       "Recent",
 	"Refresh":  			                "Refresh",
@@ -313,8 +314,8 @@ i18n_eltos['help'] = {
 	"License, platforms, etc.":	"License, platforms, etc.",
 	"help_04_01":			"WepSIM license, supported platforms, technologies used",
 
-	"Authors":			"Authors",
-	"help_04_02":			"Authors of WepSIM"
+	"Authors":			"WepSIM Team",
+	"help_04_02":			"WepSIM Team"
 
 } ;
 
@@ -620,7 +621,7 @@ def print_content(L_D, C_N):
 
     # + print header
     f.write("/*\n") ;
-    f.write(" *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve\n") ;
+    f.write(" *  Copyright 2015-2026 The WepSIM team (see docs/WEPSIM-TEAM.md)\n") ;
     f.write(" *\n") ;
     f.write(" *  This file is part of WepSIM.\n") ;
     f.write(" *\n") ;
@@ -662,8 +663,8 @@ def print_content(L_D, C_N):
             f.write("\t\t'" + translation_origin[index] + "':\t\t'" + translation_destination + "',\n") ;
     except Exception as e:
         print("\tERROR: " + str(e))
-        #print("translation list:")
-        #print(translation_list)
+        print("translation list:")
+        print(translation_list)
 
     # + print last lines
     f.write("\t\t'_last_':\t\t'_last_'\n") ;

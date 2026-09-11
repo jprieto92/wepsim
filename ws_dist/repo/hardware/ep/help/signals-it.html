@@ -571,7 +571,7 @@
               <Thead> <tr>
                 <td valign="top">
                   <div>
-                    COP (COP <sub> 4 </sub> - COP <sub> 0 </sub>)
+                    COP <sub>4 - 0</sub>)
                   </div>
                 </td>
                 <td valign="top">
@@ -647,7 +647,7 @@
                 </td>
                 <td valign="top">
                   <div>
-                    Shift Right Logical (A)
+                    Shift Right Logical (A >>> 1)
                   </div>
                 </td>
               </tr>
@@ -659,7 +659,7 @@
                 </td>
                 <td valign="top">
                   <div>
-                    Shift Right Arithmetic (A)
+                    Sposta a destra (A >> 1)
                   </div>
                 </td>
               </tr>
@@ -671,7 +671,7 @@
                 </td>
                 <td valign="top">
                   <div>
-                    Sposta a sinistra (A)
+                    Sposta a sinistra (A << 1)
                   </div>
                 </td>
               </tr>
@@ -683,7 +683,7 @@
                 </td>
                 <td valign="top">
                   <div>
-                    Ruota a destra (A)
+                    Ruota a destra (A ⥀ 1)
                   </div>
                 </td>
               </tr>
@@ -695,7 +695,7 @@
                 </td>
                 <td valign="top">
                   <div>
-                    Ruota a sinistra (A)
+                    Ruota a sinistra (A ⥀ 1)
                   </div>
                 </td>
               </tr>
@@ -1417,7 +1417,7 @@
 
 	<div id="MH">
           <p>
-            <b>MH</b><b>     </b>             1 bit
+            <b>MH</b><b>     </b>             2 bit
           </p>
           <p>
             Questo segnale permette di selezionare l'Hardware Performance Counter (HPC) con cui lavorare:
@@ -1426,7 +1426,7 @@
 	    <ul>
 	    <li><b>00</b>: Numero di cicli di clock.</li>
 	    <li><b>01</b>: Tempo CPU accumulato.</li>
-	    <li><b>10</b>: Consumo di energia accumulato.</li>
+	    <li><b>10</b>: Istruzioni decodificate.</li>
 	    <li><b>11</b>: &lt;Non usato&gt;.</li>
 	    </ul>
           </p>

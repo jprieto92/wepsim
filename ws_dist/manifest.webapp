@@ -1,21 +1,21 @@
 {
-  "version": "2.0.11",
+  "version": "2.3.7",
   "name": "WepSIM",
   "description": "The Web Elemental Processor Simulator",
   "launch_path": "/index.html",
   "icons": {
-      "56": "/wepsim/images/wepsim.png",
-      "128": "/wepsim/images/wepsim.png"
+      "56": "/ws_dist/images/wepsim.png",
+      "128": "/ws_dist/images/wepsim.png"
   },
   "developer": {
     "name": "Alejandro Calderon Mateos",
-    "url": "https://acaldero.github.io/wepsim/"
+    "url": "https://wepsim.github.io/wepsim/"
   },
   "locales": {
     "en": {
       "description": "The Web Elemental Processor Simulator",
       "developer": {
-        "url": "https://acaldero.github.io/wepsim/"
+        "url": "https://wepsim.github.io/wepsim/"
       }
     }
   },
