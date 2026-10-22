@@ -1,5 +1,5 @@
 /*
- *  Copyright 2015-2024 Felix Garcia Carballeira, Alejandro Calderon Mateos, Javier Prieto Cepeda, Saul Alonso Monsalve
+ *  Copyright 2015-2026 The WepSIM team (see docs/WEPSIM-TEAM.md)
  *
  *  This file is part of WepSIM.
  *
@@ -23,7 +23,7 @@
  * cache versioning
  */
 
-var cacheName = 'v231a_static';
+var cacheName = 'v250a_static';
 
 
 /*
@@ -38,9 +38,7 @@ self.addEventListener('install',
                                         './external/jquery.min.js',
                                         './min.external.css',
                                         './min.external.js',
-                                        './min.sim_all.js',
                                         './min.wepsim_web.js',
-                                        './min.wepsim_i18n.js',
                                         './min.wepsim_web_pwa.js',
                                         './wepsim-classic.html',
                                         './wepsim-compact.html',
@@ -102,25 +100,26 @@ self.addEventListener('install',
                                         './repo/assembly/rv32/s1e2.asm',
                                         './repo/assembly/rv32/s2e1.asm',
                                         './repo/assembly/rv32/s3e1.asm',
-                                        './repo/microcode/mips/ep_bare.mc',
-                                        './repo/microcode/mips/ep_base.mc',
+                                        './repo/microcode/mips/ep_mix1_l3.mc',
+                                        './repo/microcode/mips/ep_sig1_base.mc',
                                         './repo/microcode/mips/ep_enhanced.mc',
                                         './repo/microcode/mips/ep_interactive.mc',
-                                        './repo/microcode/mips/ep_os.mc',
-                                        './repo/microcode/mips/poc_base.mc',
-                                        './repo/microcode/mips/poc_os.mc',
-                                        './repo/microcode/rv32/ep_bare.mc',
-                                        './repo/microcode/rv32/ep_base.mc',
-                                        './repo/microcode/rv32/ep_min.mc',
-                                        './repo/microcode/rv32/poc_base.mc',
-                                        './repo/microcode/rv32/poc_min.mc',
-                                        './repo/microcode/z80/ep_bare.mc',
+                                        './repo/microcode/mips/ep_sig1_l10.mc',
+                                        './repo/microcode/mips/poc_sig1_l5.mc',
+                                        './repo/microcode/mips/poc_sig1_l10.mc',
+                                        './repo/microcode/rv32/ep_mix1_l3.mc',
+                                        './repo/microcode/rv32/ep_sig1_base.mc',
+                                        './repo/microcode/rv32/ep_sig1_l1.mc',
+                                        './repo/microcode/rv32/poc_sig1_l5.mc',
+                                        './repo/microcode/rv32/poc_sig1_l1.mc',
+                                        './repo/microcode/z80/ep_sig1_l3.mc',
                                         './repo/examples_set/mips/default.json',
                                         './repo/examples_set/rv32/default.json',
-                                        './images/author_jprieto.png',
-                                        './images/author_fgarcia.png',
-                                        './images/author_salonso.png',
-                                        './images/author_acaldero.png',
+                                        './images/team_jprieto.png',
+                                        './images/team_fgarcia.png',
+                                        './images/team_salonso.png',
+                                        './images/team_acaldero.png',
+                                        './images/team_alvarogu.png',
                                         './images/splash/ipad_splash.png',
                                         './images/splash/iphone6_splash.png',
                                         './images/splash/iphoneplus_splash.png',

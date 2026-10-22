@@ -647,7 +647,7 @@
                 </TD>
                 <td valign="top" >
                   <div>
-                    右移逻辑（A）
+                    右移逻辑（A >>> 1）
                   </div>
                 </TD>
               </TR>
@@ -659,7 +659,7 @@
                 </TD>
                 <td valign="top" >
                   <div>
-                    右移算术（A）
+                    右移算术（A >> 1）
                   </div>
                 </TD>
               </TR>
@@ -671,7 +671,7 @@
                 </TD>
                 <td valign="top" >
                   <div>
-                    向左移（A）
+                    向左移（A << 1）
                   </div>
                 </TD>
               </TR>
@@ -683,7 +683,7 @@
                 </TD>
                 <td valign="top" >
                   <div>
-                    向右旋转（A）
+                    向右旋转（A ⥀ 1）
                   </div>
                 </TD>
               </TR>
@@ -695,7 +695,7 @@
                 </TD>
                 <td valign="top" >
                   <div>
-                    向左旋转（A）
+                    向左旋转（A ⥀ 1）
                   </div>
                 </TD>
               </TR>
@@ -1417,7 +1417,7 @@
 
 	<div id="MH">
           <p>
-            <b>MH</b><b>     </b>             1 bit
+            <b>MH</b><b>     </b>             2 bit
           </p>
           <p>
             该信号允许选择要使用的硬件性能计数器 (HPC):
@@ -1426,7 +1426,7 @@
 	    <ul>
 	    <li><b>00</b>: 时钟周期数。.</li>
 	    <li><b>01</b>: 累积的 CPU 时间。.</li>
-	    <li><b>10</b>: 累计功耗.</li>
+	    <li><b>10</b>: 指令已解码.</li>
 	    <li><b>11</b>: &lt;不曾用过&gt;.</li>
 	    </ul>
           </p>

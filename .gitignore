@@ -1,2 +1,4 @@
 node_modules/
-package-lock.json
+ws_dist/
+.vscode/
+wepsim-code-workspace.code-workspace

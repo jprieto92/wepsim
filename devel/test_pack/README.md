@@ -1,0 +1,37 @@
+
+# WepSIM: Web Elemental Processor Simulator
+
+![Build Status](https://github.com/acaldero/wepsim/actions/workflows/ci-dist.yml/badge.svg)
+[![Maintainability](https://qlty.sh/gh/acaldero/projects/wepsim/maintainability.svg)](https://qlty.sh/gh/acaldero/projects/wepsim)
+[![DeepSource](https://app.deepsource.com/gh/acaldero/wepsim.svg/?label=resolved+issues&show_trend=false&token=Re_wpCMdTb3y7nP4XtfWeKIY)](https://app.deepsource.com/gh/acaldero/wepsim/)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![Release](https://img.shields.io/badge/Stable-2.5.0-green.svg)](https://github.com/wepsim/wepsim/releases/tag/v2.5.0)
+
+<html>
+	<ul>
+	<table>
+		<tr align="center" cellpadding="2">
+		      <td> 📖 &nbsp;<br> <a href="https://wepsim.github.io/">WepSIM website</a> </td>
+		      <td> 📖 &nbsp;<br> <a href="https://wepsim.github.io/info/">WepSIM documentation</a> </td>
+		      <td> 🛠️ &nbsp;<br> <a href="https://wepsim.github.io/wepsim/">The WepSIM simulator</a> </td>
+		</tr>
+	</table>
+	</ul>
+</html>
+
+
+<html>
+<table width="100%">
+<tr><td>Pack</td>                     <td>CPU</td>  <td> Tested      </td><td>&nbps;</td></tr>
+<tr><td>test_wepsim_pack1.json</td>   <td>EP</td>   <td> Commands    </td><td>&nbps;</td></tr>
+<tr><td>test_wepsim_pack2.json</td>   <td>EP</td>   <td> Checkpoints </td><td>&nbps;</td></tr>
+<tr><td>test_wepsim_pack3.json</td>   <td>EP</td>   <td> Examples    </td><td>MIPS32</td></tr>
+<tr><td>test_wepsim_pack4.json</td>   <td>EP</td>   <td> Examples    </td><td>RISC-V</td></tr>
+<tr><td>test_wepsim_pack5.json</td>   <td>RV</td>   <td> Examples    </td><td>RISC-V</td></tr>
+<tr><td>test_wepsim_pack6.json</td>   <td>EP</td>   <td> ASM Errors  </td><td>MIPS32</td></tr>
+<tr><td>test_wepsim_pack7.json</td>   <td>EP</td>   <td> ASM Errors  </td><td>RISC-V</td></tr>
+<tr><td>test_wepsim_pack8.json</td>   <td>EP2</td>  <td> Examples    </td><td>MIPS32</td></tr>
+<tr><td>test_wepsim_pack9.json</td>   <td>EP2</td>  <td> Examples    </td><td>RISC-V</td></tr>
+</table>
+</html>
+
